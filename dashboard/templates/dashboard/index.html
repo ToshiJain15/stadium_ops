@@ -13,7 +13,7 @@
   <!-- TOP HEADER -->
   <header class="flex justify-between items-center px-10 py-5 border-b border-[var(--surface-border)] z-10">
     <div class="flex items-center gap-5">
-      <button id="sidebar-toggle-btn"
+      <button id="sidebar-toggle-btn" aria-label="Toggle Navigation Sidebar" aria-haspopup="true"
         class="bg-none border-none text-[var(--primary)] text-2xl cursor-pointer p-0 select-none">
         ≡
       </button>
@@ -42,8 +42,8 @@
 
       <!-- Profile Menu & Details Dropdown -->
       <div class="relative flex-shrink-0">
-        <button id="profile-menu-btn" class="w-9 h-9 rounded-full bg-[var(--surface)] border border-[var(--primary)] flex items-center justify-center overflow-hidden cursor-pointer outline-none">
-          <span id="profile-avatar-emoji" class="text-lg">🧑‍💼</span>
+        <button id="profile-menu-btn" aria-label="View user profile settings" aria-haspopup="true" class="w-9 h-9 rounded-full bg-[var(--surface)] border border-[var(--primary)] flex items-center justify-center overflow-hidden cursor-pointer outline-none">
+          <span id="profile-avatar-emoji" class="text-lg" aria-hidden="true">🧑‍💼</span>
         </button>
         
         <!-- Profile Dropdown (hidden by default) -->
@@ -107,23 +107,23 @@
 
       <!-- Navigation Links -->
       <nav class="flex-1" aria-label="Main Navigation">
-        <div class="sidebar-item active" onclick="switchActiveTab('Intelligence')" data-tab="Intelligence">
+        <div class="sidebar-item active" onclick="switchActiveTab('Intelligence')" data-tab="Intelligence" role="tab" aria-selected="true" tabindex="0">
           <span>⚽</span>
           <span>Tournament Overview</span>
         </div>
-        <div class="sidebar-item" onclick="switchActiveTab('Access')" data-tab="Access">
+        <div class="sidebar-item" onclick="switchActiveTab('Access')" data-tab="Access" role="tab" aria-selected="false" tabindex="-1">
           <span>🛡️</span>
           <span>Secure Access</span>
         </div>
-        <div class="sidebar-item" onclick="switchActiveTab('Concierge')" data-tab="Concierge">
+        <div class="sidebar-item" onclick="switchActiveTab('Concierge')" data-tab="Concierge" role="tab" aria-selected="false" tabindex="-1">
           <span>✨</span>
           <span>VIP Concierge</span>
         </div>
-        <div class="sidebar-item" onclick="switchActiveTab('Transport')" data-tab="Transport">
+        <div class="sidebar-item" onclick="switchActiveTab('Transport')" data-tab="Transport" role="tab" aria-selected="false" tabindex="-1">
           <span>🍃</span>
           <span>Eco-Dashboard</span>
         </div>
-        <div class="sidebar-item" onclick="dispatchInfoAlert('Health check: All systems nominal. v1.1.0')" data-tab="Settings">
+        <div class="sidebar-item" onclick="dispatchInfoAlert('Health check: All systems nominal. v1.1.0')" data-tab="Settings" role="tab" aria-selected="false" tabindex="-1">
           <span>⚙️</span>
           <span>System Settings</span>
         </div>
@@ -1016,22 +1016,22 @@
   </div>
 
   <!-- FLOATING BOTTOM NAVIGATION BAR -->
-  <nav
+  <nav aria-label="Tab Navigation" role="tablist"
     class="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-black/80 to-[#111]/90 border-t border-[var(--surface-border)] flex justify-center items-center gap-[100px] z-10 select-none">
-    <button onclick="switchActiveTab('Intelligence')" class="nav-tab-btn active" id="nav-btn-Intelligence">
-      <span class="text-2xl node-icon">📊</span>
+    <button onclick="switchActiveTab('Intelligence')" class="nav-tab-btn active" id="nav-btn-Intelligence" role="tab" aria-selected="true" aria-label="View Intelligence Overview Tab">
+      <span class="text-2xl node-icon" aria-hidden="true">📊</span>
       <span class="text-[10px] font-semibold tracking-[0.5px]">Intelligence</span>
     </button>
-    <button onclick="switchActiveTab('Concierge')" class="nav-tab-btn" id="nav-btn-Concierge">
-      <span class="text-2xl node-icon grayscale opacity-50">🤵</span>
+    <button onclick="switchActiveTab('Concierge')" class="nav-tab-btn" id="nav-btn-Concierge" role="tab" aria-selected="false" aria-label="View VIP Concierge Tab">
+      <span class="text-2xl node-icon grayscale opacity-50" aria-hidden="true">🤵</span>
       <span class="text-[10px] tracking-[0.5px]">Concierge</span>
     </button>
-    <button onclick="switchActiveTab('Transport')" class="nav-tab-btn" id="nav-btn-Transport">
-      <span class="text-2xl node-icon grayscale opacity-50">🚆</span>
+    <button onclick="switchActiveTab('Transport')" class="nav-tab-btn" id="nav-btn-Transport" role="tab" aria-selected="false" aria-label="View Eco Transport Tab">
+      <span class="text-2xl node-icon grayscale opacity-50" aria-hidden="true">🚆</span>
       <span class="text-[10px] tracking-[0.5px]">Transport</span>
     </button>
-    <button onclick="switchActiveTab('Access')" class="nav-tab-btn" id="nav-btn-Access">
-      <span class="text-2xl node-icon grayscale opacity-50">🛡️</span>
+    <button onclick="switchActiveTab('Access')" class="nav-tab-btn" id="nav-btn-Access" role="tab" aria-selected="false" aria-label="View Secure Access Control Tab">
+      <span class="text-2xl node-icon grayscale opacity-50" aria-hidden="true">🛡️</span>
       <span class="text-[10px] tracking-[0.5px]">Access</span>
     </button>
   </nav>

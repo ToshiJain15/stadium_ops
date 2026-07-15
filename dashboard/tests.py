@@ -33,6 +33,19 @@ class DashboardTests(SimpleTestCase):
         self.assertIn('response', data)
         self.assertIn('Gate 5', data['response']) # verify flow logic answers correctly
 
+    def test_chat_api_empty_payload(self):
+        """Verify chat endpoint handles empty prompt/payload gracefully without crashing."""
+        url = reverse('chat_api')
+        payload = {}
+        response = self.client.post(
+            url, 
+            data=json.dumps(payload), 
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.content)
+        self.assertIn('response', data)
+
     def test_concierge_api_arabic_dialect(self):
         """Verify concierge translation engine answers elegantly in Arabic."""
         url = reverse('concierge_api')
@@ -49,6 +62,23 @@ class DashboardTests(SimpleTestCase):
         data = json.loads(response.content)
         self.assertIn('response', data)
         self.assertIn('سموّك', data['response']) # verify Arabic addressing is correct
+
+    def test_concierge_api_unsupported_language(self):
+        """Verify concierge fallback handles unsupported language requests by defaulting to English (EN)."""
+        url = reverse('concierge_api')
+        payload = {
+            "prompt": "View Gourmet Dining Menu",
+            "language": "XYZ_UNSUPPORTED"
+        }
+        response = self.client.post(
+            url,
+            data=json.dumps(payload),
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.content)
+        self.assertIn('response', data)
+        self.assertIn('Your Grace', data['response']) # fallback checks EN default
 
     def test_intelligence_api_alerts(self):
         """Verify intelligence simulation reports high traffic alerts for metro."""
@@ -69,6 +99,22 @@ class DashboardTests(SimpleTestCase):
         # Verify Metro delay alert is triggered
         metro_alert = any('metro' in alert['id'] for alert in data['alerts'])
         self.assertTrue(metro_alert)
+
+    def test_intelligence_api_edge_cases(self):
+        """Verify intelligence simulation clamps or handles zero/negative values safely."""
+        url = reverse('intelligence_api')
+        payload = {
+            "crowdCount": -500,
+            "metroTime": 0
+        }
+        response = self.client.post(
+            url,
+            data=json.dumps(payload),
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.content)
+        self.assertIn('alerts', data)
 
     def test_health_api(self):
         """Verify self-health check telemetry status outputs active."""
