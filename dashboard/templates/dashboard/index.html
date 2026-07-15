@@ -307,6 +307,54 @@
           </div>
         </div>
 
+        <!-- ══════════════ LIVE ANALYTICS & AI PREDICTIONS ROW ══════════════ -->
+        <div class="flex flex-wrap gap-5">
+
+          <!-- AI Predictive Summary Card -->
+          <div class="glass-panel flex-1 min-w-[300px] p-5" style="border-left: 4px solid var(--primary); background: linear-gradient(135deg, rgba(212,255,0,0.03) 0%, rgba(0,0,0,0) 60%);">
+            <div class="flex items-center gap-2.5 mb-3">
+              <span class="text-[var(--primary)] text-xl">🧠</span>
+              <h3 class="m-0 text-[10px] text-[var(--primary)] tracking-[1px] font-bold">AI PREDICTIVE SUMMARY</h3>
+              <span id="analytics-trend-badge" class="ml-auto text-[10px] px-2.5 py-1 rounded-full bg-[var(--primary)]/10 border border-[var(--primary)]/30 text-[var(--primary)] font-semibold">→ STABLE</span>
+            </div>
+            <p id="analytics-ai-summary" class="text-sm text-white/80 leading-relaxed m-0">
+              Loading AI predictive analysis...
+            </p>
+            <div class="flex gap-4 mt-4 flex-wrap">
+              <div class="text-center">
+                <div id="analytics-crowd-now" class="text-xl font-bold text-[var(--primary)]">84,200</div>
+                <div class="text-[9px] text-white/40 tracking-[1px]">CROWD NOW</div>
+              </div>
+              <div class="text-center">
+                <div id="analytics-energy-now" class="text-xl font-bold text-[var(--secondary)]">94.2 MWh</div>
+                <div class="text-[9px] text-white/40 tracking-[1px]">ENERGY LIVE</div>
+              </div>
+              <div class="text-center">
+                <div id="analytics-sentiment-now" class="text-xl font-bold text-[var(--success)]">94%</div>
+                <div class="text-[9px] text-white/40 tracking-[1px]">SENTIMENT</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Crowd Trend Chart -->
+          <div class="glass-panel flex-[1.5] min-w-[320px] p-5">
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center gap-2">
+                <span class="text-[var(--primary)] text-base">📈</span>
+                <h3 class="m-0 text-[10px] text-[var(--primary)] tracking-[1px] font-bold">CROWD TREND — 60 MIN</h3>
+              </div>
+              <div class="flex gap-1.5">
+                <button onclick="switchAnalyticsChart('crowd')" id="chart-btn-crowd" class="btn-primary px-2.5 py-1 text-[10px] rounded-lg">Crowd</button>
+                <button onclick="switchAnalyticsChart('energy')" id="chart-btn-energy" class="btn-outline px-2.5 py-1 text-[10px] rounded-lg">Energy</button>
+                <button onclick="switchAnalyticsChart('sentiment')" id="chart-btn-sentiment" class="btn-outline px-2.5 py-1 text-[10px] rounded-lg">Sentiment</button>
+              </div>
+            </div>
+            <div style="position: relative; height: 160px;">
+              <canvas id="analytics-chart-canvas"></canvas>
+            </div>
+          </div>
+        </div>
+
         <!-- AI Chat Response Panel -->
         <div id="chat-response-panel"
           class="hidden glass-panel animate-fade-in p-[20px_30px] border-l-4 border-[var(--primary)] relative">
@@ -329,7 +377,9 @@
             <span id="chat-btn-label" class="text-[10px] text-white/50 tracking-[1px]">AI READY</span>
           </button>
         </div>
+
       </section>
+
 
       <!-- ================= CONCIERGE TAB ================= -->
       <section id="tab-Concierge" class="tab-section hidden flex flex-col gap-10">

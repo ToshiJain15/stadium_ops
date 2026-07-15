@@ -1200,6 +1200,156 @@ window.handleLoginSubmit = function(event) {
   window.toggleLoginModal(false);
 };
 
+// --- ANALYTICS CHART ENGINE (Chart.js) ---
+let analyticsChart = null;
+let analyticsData = null;
+let activeChartMetric = 'crowd';
+
+const CHART_CONFIG = {
+  crowd: {
+    label: 'Crowd Attendance',
+    color: 'rgba(212, 255, 0, 1)',
+    fill: 'rgba(212, 255, 0, 0.08)',
+    unit: '',
+    title: 'CROWD TREND — 60 MIN'
+  },
+  energy: {
+    label: 'Energy (MWh)',
+    color: 'rgba(0, 229, 255, 1)',
+    fill: 'rgba(0, 229, 255, 0.08)',
+    unit: ' MWh',
+    title: 'ENERGY TREND — 60 MIN'
+  },
+  sentiment: {
+    label: 'Fan Sentiment (%)',
+    color: 'rgba(0, 230, 118, 1)',
+    fill: 'rgba(0, 230, 118, 0.08)',
+    unit: '%',
+    title: 'SENTIMENT TREND — 60 MIN'
+  }
+};
+
+function initAnalyticsChart(labels, data, metric) {
+  const canvas = document.getElementById('analytics-chart-canvas');
+  if (!canvas || typeof Chart === 'undefined') return;
+
+  const cfg = CHART_CONFIG[metric] || CHART_CONFIG.crowd;
+
+  if (analyticsChart) {
+    analyticsChart.destroy();
+    analyticsChart = null;
+  }
+
+  analyticsChart = new Chart(canvas, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: cfg.label,
+        data: data,
+        borderColor: cfg.color,
+        backgroundColor: cfg.fill,
+        borderWidth: 2,
+        pointRadius: 3,
+        pointHoverRadius: 6,
+        pointBackgroundColor: cfg.color,
+        tension: 0.4,
+        fill: true
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 600, easing: 'easeInOutQuart' },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: 'rgba(20,20,20,0.95)',
+          borderColor: cfg.color,
+          borderWidth: 1,
+          titleColor: cfg.color,
+          bodyColor: 'rgba(255,255,255,0.8)',
+          callbacks: {
+            label: (ctx) => ` ${ctx.parsed.y.toLocaleString()}${cfg.unit}`
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { color: 'rgba(255,255,255,0.04)' },
+          ticks: { color: 'rgba(255,255,255,0.35)', font: { size: 9 }, maxRotation: 0 }
+        },
+        y: {
+          grid: { color: 'rgba(255,255,255,0.04)' },
+          ticks: {
+            color: 'rgba(255,255,255,0.35)',
+            font: { size: 9 },
+            callback: (v) => v.toLocaleString() + cfg.unit
+          }
+        }
+      }
+    }
+  });
+}
+
+window.switchAnalyticsChart = function(metric) {
+  activeChartMetric = metric;
+
+  // Update button states
+  ['crowd', 'energy', 'sentiment'].forEach(m => {
+    const btn = document.getElementById(`chart-btn-${m}`);
+    if (btn) {
+      btn.className = m === metric
+        ? 'btn-primary px-2.5 py-1 text-[10px] rounded-lg'
+        : 'btn-outline px-2.5 py-1 text-[10px] rounded-lg';
+    }
+  });
+
+  // Update chart title
+  const titleEl = document.querySelector('#analytics-chart-canvas')?.closest('.glass-panel')?.querySelector('h3');
+  if (titleEl) titleEl.textContent = CHART_CONFIG[metric]?.title || 'TREND — 60 MIN';
+
+  // Re-render with new data
+  if (analyticsData) {
+    const metricKey = metric === 'crowd' ? 'crowd' : metric === 'energy' ? 'energy' : 'sentiment';
+    initAnalyticsChart(analyticsData.labels, analyticsData.datasets[metricKey], metric);
+  }
+};
+
+async function loadAnalyticsData() {
+  try {
+    const res = await fetch('/api/analytics');
+    if (!res.ok) return;
+    analyticsData = await res.json();
+
+    // Update AI Predictive Summary card
+    const summaryEl = document.getElementById('analytics-ai-summary');
+    const trendBadge = document.getElementById('analytics-trend-badge');
+    const crowdNow = document.getElementById('analytics-crowd-now');
+    const energyNow = document.getElementById('analytics-energy-now');
+    const sentimentNow = document.getElementById('analytics-sentiment-now');
+
+    if (summaryEl) summaryEl.textContent = analyticsData.aiSummary;
+    if (trendBadge) trendBadge.textContent = analyticsData.trend;
+    if (crowdNow) crowdNow.textContent = analyticsData.currentCrowd.toLocaleString();
+    if (energyNow && analyticsData.datasets.energy) {
+      const lastEnergy = analyticsData.datasets.energy[analyticsData.datasets.energy.length - 1];
+      energyNow.textContent = lastEnergy + ' MWh';
+    }
+    if (sentimentNow && analyticsData.datasets.sentiment) {
+      const lastSentiment = analyticsData.datasets.sentiment[analyticsData.datasets.sentiment.length - 1];
+      sentimentNow.textContent = lastSentiment + '%';
+    }
+
+    // Render or update chart
+    const dataKey = activeChartMetric === 'crowd' ? 'crowd' : activeChartMetric === 'energy' ? 'energy' : 'sentiment';
+    initAnalyticsChart(analyticsData.labels, analyticsData.datasets[dataKey], activeChartMetric);
+
+  } catch (err) {
+    console.warn('Analytics data load failed:', err);
+  }
+}
+
 // Initialize Loop Tickers
 window.addEventListener('DOMContentLoaded', () => {
   renderIntelligenceFeed();
@@ -1210,6 +1360,9 @@ window.addEventListener('DOMContentLoaded', () => {
   // Load all telemetry/dummy data immediately for client demo
   loadTelemetryData();
 
+  // Load analytics chart data immediately
+  loadAnalyticsData();
+
   // Tick every 3 seconds
   setInterval(runTelemetryTick, 3000);
 
@@ -1218,6 +1371,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Refresh telemetry panel data every 10 seconds
   setInterval(loadTelemetryData, 10000);
+
+  // Refresh analytics chart every 30 seconds
+  setInterval(loadAnalyticsData, 30000);
 
   // Live clock ticker
   setInterval(() => {

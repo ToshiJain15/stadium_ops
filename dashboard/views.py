@@ -494,6 +494,84 @@ def intelligence_api(request):
 
 
 @require_http_methods(["GET"])
+def analytics_api(request):
+    """Returns historical trend data for Chart.js live graphs and a predictive AI summary."""
+    r = random.Random(int(time.time() / 10))  # Changes every 10 seconds for variety
+
+    # Generate 12 historical data points (last 60 minutes, every 5 mins)
+    now_epoch = int(time.time())
+    base_crowd = 84200
+
+    crowd_history = []
+    energy_history = []
+    sentiment_history = []
+    gate_flow_history = []
+    labels = []
+
+    for i in range(12, 0, -1):
+        offset_mins = i * 5
+        epoch = now_epoch - (offset_mins * 60)
+        hr = time.strftime("%H:%M", time.gmtime(epoch))
+        labels.append(hr)
+
+        seed_r = random.Random(epoch // 60)
+        crowd_val = max(72000, min(88966, base_crowd + seed_r.randint(-3500, 2000) - (offset_mins * 30)))
+        crowd_history.append(crowd_val)
+        energy_history.append(round(94.2 + seed_r.uniform(-4, 4), 1))
+        sentiment_history.append(round(92 + seed_r.uniform(-5, 3), 1))
+        gate_flow_history.append(round(4200 + seed_r.randint(-600, 600)))
+
+    # Add "now" data point
+    labels.append("NOW")
+    crowd_history.append(base_crowd + r.randint(-100, 100))
+    energy_history.append(round(94.2 + r.uniform(-1, 1), 1))
+    sentiment_history.append(round(94 + r.uniform(-1, 1), 1))
+    gate_flow_history.append(round(4800 + r.randint(-200, 200)))
+
+    # Predictive AI summary (mock logic — replaced by Gemini if key is set)
+    current_crowd = crowd_history[-1]
+    trend = current_crowd - crowd_history[-3] if len(crowd_history) >= 3 else 0
+    trend_label = "↑ Rising" if trend > 200 else ("↓ Declining" if trend < -200 else "→ Stable")
+
+    if API_KEY and API_KEY != 'your_gemini_api_key_here':
+        try:
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={API_KEY}"
+            headers = {"Content-Type": "application/json"}
+            prompt = f"""You are an AI analytics engine for FIFA 2026 Lusail Stadium.
+Current telemetry snapshot:
+- Crowd: {current_crowd:,} ({trend_label})
+- Energy: {energy_history[-1]} MWh
+- Fan Sentiment: {sentiment_history[-1]}%
+- Gate Flow: {gate_flow_history[-1]:,} fans/hr aggregate
+
+Generate a concise 2-sentence predictive analytics summary for the operations director.
+Focus on trend forecasting and one recommended action. Be operational and precise."""
+            payload = {"contents": [{"parts": [{"text": prompt}]}]}
+            resp = requests.post(url, headers=headers, json=payload, timeout=8)
+            if resp.status_code == 200:
+                ai_summary = resp.json()['candidates'][0]['content']['parts'][0]['text'].strip()
+            else:
+                raise Exception("API error")
+        except Exception:
+            ai_summary = f"Crowd trajectory is {trend_label.lower()} at {current_crowd:,} attendees. Energy grid is operating at {energy_history[-1]} MWh with solar contribution at 19.4% — recommend maintaining current HVAC load distribution for next 30 minutes."
+    else:
+        ai_summary = f"Crowd trajectory is {trend_label.lower()} at {current_crowd:,} attendees. Fan sentiment at {sentiment_history[-1]}% is above benchmark — AI forecasts peak ingress in the next 15 minutes; recommend pre-positioning Gate 5 overflow marshals now."
+
+    return JsonResponse({
+        "labels": labels,
+        "datasets": {
+            "crowd": crowd_history,
+            "energy": energy_history,
+            "sentiment": sentiment_history,
+            "gateFlow": gate_flow_history
+        },
+        "aiSummary": ai_summary,
+        "trend": trend_label,
+        "currentCrowd": current_crowd
+    })
+
+
+@require_http_methods(["GET"])
 def telemetry_api(request):
     """Rich real-time stadium telemetry data endpoint — matches, gates, transport, staffing, sentiment, security."""
     return JsonResponse(generate_telemetry_data())

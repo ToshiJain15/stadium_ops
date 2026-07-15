@@ -7,5 +7,6 @@ urlpatterns = [
     path('api/concierge', views.concierge_api, name='concierge_api'),
     path('api/intelligence', views.intelligence_api, name='intelligence_api'),
     path('api/telemetry', views.telemetry_api, name='telemetry_api'),
+    path('api/analytics', views.analytics_api, name='analytics_api'),
     path('api/health', views.health_api, name='health_api'),
 ]

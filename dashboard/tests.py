@@ -163,3 +163,35 @@ class DashboardTests(SimpleTestCase):
         self.assertEqual(data['stadium']['name'], 'Lusail Iconic Stadium')
         self.assertTrue(len(data['matches']) >= 4)
         self.assertTrue(len(data['gates']) >= 5)
+
+    def test_analytics_api(self):
+        """Verify analytics API returns historical trend datasets and AI predictive summary."""
+        url = reverse('analytics_api')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.content)
+
+        # Verify top-level schema
+        self.assertIn('labels', data)
+        self.assertIn('datasets', data)
+        self.assertIn('aiSummary', data)
+        self.assertIn('trend', data)
+        self.assertIn('currentCrowd', data)
+
+        # Verify datasets have the correct keys
+        datasets = data['datasets']
+        self.assertIn('crowd', datasets)
+        self.assertIn('energy', datasets)
+        self.assertIn('sentiment', datasets)
+        self.assertIn('gateFlow', datasets)
+
+        # Verify 13 data points: 12 historical + 1 "NOW"
+        self.assertEqual(len(data['labels']), 13)
+        self.assertEqual(len(datasets['crowd']), 13)
+        self.assertEqual(data['labels'][-1], 'NOW')
+
+        # Verify crowd is within plausible stadium range
+        self.assertTrue(60000 <= data['currentCrowd'] <= 89000)
+
+        # Verify AI summary is non-empty
+        self.assertGreater(len(data['aiSummary']), 20)
