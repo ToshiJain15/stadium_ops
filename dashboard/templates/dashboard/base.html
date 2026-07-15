@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FIFA 2026 GenAI Stadium Operations</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="AI-enhanced stadium operations and VIP concierge experience platform for the World Cup 2026.">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Premium Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <!-- Custom CSS Design System -->
+  <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+  
+  <!-- Three.js & OrbitControls CDNs -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+  {% block content %}
+  {% endblock %}
+
+  <!-- Core Scripts -->
+  <!-- We define a global state window object so the 3D map can bind to updates -->
+  <script>
+    window.stadiumState = {
+      crowdCount: 84200,
+      aiConfidence: 98.4,
+      metroTime: 4,
+      shuttleTime: 8,
+      activeZone: null,
+      activeTab: 'Intelligence',
+      activeTier: 'lower',
+      highContrast: false,
+      wheelchairRouting: false,
+      audioNavigation: false,
+      autoTourActive: false
+    };
+  </script>
+  <script src="{% static 'js/stadium_map_3d.js' %}?v=1.2"></script>
+  <script src="{% static 'js/dashboard.js' %}?v=1.2"></script>
+</body>
+</html>

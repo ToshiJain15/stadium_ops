@@ -1,0 +1,363 @@
+:root {
+  /* Premium sports-tech carbon & electric volt palette */
+  --background: #080A0C;
+  --background-panel: #101316;
+  --foreground: #F1F3F5;
+  
+  --primary: #D4FF00; /* Nike Volt Green/Yellow */
+  --primary-glow: rgba(212, 255, 0, 0.35);
+  --secondary: #00E5FF; /* Cyan / Electric Turquoise */
+  --secondary-glow: rgba(0, 229, 255, 0.3);
+  --accent: #FF3366; /* Vibrant athletic pink/red */
+  --success: #00FF88; /* Minty Green */
+  --success-glow: rgba(0, 255, 136, 0.3);
+  --error: #FF3366;
+  
+  --surface: rgba(16, 19, 22, 0.75);
+  --surface-border: rgba(255, 255, 255, 0.06);
+  --surface-hover: rgba(255, 255, 255, 0.04);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: 'Inter', -apple-system, sans-serif;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  overflow: hidden;
+  background-image: radial-gradient(circle at 50% 0%, rgba(212, 255, 0, 0.05) 0%, transparent 60%);
+}
+
+.display-text {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+/* Glass Panels */
+.glass-panel {
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  border-radius: 12px;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.25);
+  transition: all 0.3s ease;
+}
+
+/* Sidebar and Navigation Item Styles */
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px 20px;
+  cursor: pointer;
+  border-left: 3px solid transparent;
+  transition: background 0.2s, border 0.2s;
+  color: var(--foreground);
+  font-size: 0.9rem;
+}
+
+.sidebar-item:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.sidebar-item.active {
+  background: rgba(252, 209, 90, 0.05);
+  border-left: 3px solid var(--primary);
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.sidebar-item.active span:first-child {
+  filter: none;
+}
+
+.sidebar-item span:first-child {
+  filter: grayscale(100%) opacity(0.6);
+}
+
+/* Button Component Styles */
+.btn-primary {
+  background: var(--primary);
+  color: #111;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--foreground);
+  border: 1px solid var(--surface-border);
+  padding: 0.75rem 1.5rem;
+  border-radius: 20px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.btn-outline:hover {
+  background: var(--surface-hover);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Floating Bottom Navigation Tab Buttons */
+.nav-tab-btn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.nav-tab-btn:hover {
+  color: var(--primary);
+}
+
+.nav-tab-btn.active {
+  color: var(--primary);
+  transform: translateY(-2px);
+}
+
+.nav-tab-btn.active .node-icon {
+  filter: none !important;
+  opacity: 1 !important;
+}
+
+/* Sub-Navigation Links */
+.subnav-link {
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+  padding-bottom: 4px;
+  border-bottom: 2px solid transparent;
+}
+
+.subnav-link:hover {
+  color: var(--primary) !important;
+}
+
+.subnav-link.active {
+  color: var(--primary) !important;
+  border-bottom: 2px solid var(--primary);
+}
+
+/* Suggestion Pills in Concierge */
+.suggestion-pill {
+  background: rgba(252, 209, 90, 0.08);
+  border: 1px solid rgba(252, 209, 90, 0.2);
+  color: var(--primary);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.suggestion-pill:hover {
+  background: rgba(252, 209, 90, 0.15);
+  border-color: var(--primary);
+}
+
+/* Dialect Language Buttons */
+.lang-btn {
+  padding: 8px 16px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.6);
+  border-radius: 6px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.lang-btn:hover, .lang-btn.active {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Pulse indicator dot animation */
+@keyframes pulse {
+  0% { opacity: 0.5; }
+  50% { opacity: 1; box-shadow: 0 0 10px var(--success-glow); }
+  100% { opacity: 0.5; }
+}
+
+.dot-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--success);
+  display: inline-block;
+  animation: pulse 2s infinite;
+}
+
+/* Timeline Stages Journey styles */
+.timeline-node .node-circle {
+  transition: all 0.2s;
+}
+
+.timeline-node:hover .node-circle {
+  transform: scale(1.05);
+  border-color: var(--primary);
+}
+
+/* Modal Overlay fixed windows styling */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out forwards;
+}
+
+.modal-box {
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(15px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Fade in animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Pulse glow for live blueprint guard SVG nodes */
+@keyframes pulseGlow {
+  0% { transform: scale(1); filter: drop-shadow(0 0 2px var(--success)); }
+  50% { transform: scale(1.1); filter: drop-shadow(0 0 6px var(--success)); }
+  100% { transform: scale(1); filter: drop-shadow(0 0 2px var(--success)); }
+}
+
+.animate-pulse-glow {
+  transform-origin: center;
+  animation: pulseGlow 2.5s infinite ease-in-out;
+}
+
+/* Focus styles for accessibility */
+*:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Route suggest cards */
+.route-card {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.route-card:hover {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 25px rgba(252, 209, 90, 0.15);
+  transform: translateY(-4px);
+}
+
+/* High Contrast Mode CSS class overrides */
+.high-contrast {
+  --background: #000000 !important;
+  --background-panel: #000000 !important;
+  --foreground: #FFFFFF !important;
+  --primary: #FFFF00 !important;
+  --primary-glow: rgba(255, 255, 0, 0.6) !important;
+  --success: #00FF00 !important;
+  --success-glow: rgba(0, 255, 0, 0.6) !important;
+  --error: #FF0000 !important;
+  --surface: #000000 !important;
+  --surface-border: #FFFFFF !important;
+  --surface-hover: #111111 !important;
+}
+
+.high-contrast .glass-panel {
+  background: #000000 !important;
+  border: 2px solid #FFFFFF !important;
+  box-shadow: none !important;
+}
+
+.high-contrast .btn-primary {
+  background: #FFFF00 !important;
+  color: #000000 !important;
+  border: 2px solid #FFFF00 !important;
+  font-weight: 900 !important;
+}
+
+.high-contrast .btn-outline {
+  border: 2px solid #FFFFFF !important;
+  background: #000000 !important;
+  color: #FFFFFF !important;
+}
+
+.high-contrast input, .high-contrast textarea {
+  border: 2px solid #FFFFFF !important;
+  background: #000000 !important;
+  color: #FFFFFF !important;
+}
+
+.high-contrast .suggestion-pill {
+  border: 2px solid #FFFF00 !important;
+  background: #000000 !important;
+  color: #FFFF00 !important;
+}
+
+.high-contrast .lang-btn {
+  border: 2px solid #FFFFFF !important;
+  color: #FFFFFF !important;
+}
+
+.high-contrast .lang-btn.active {
+  border-color: #FFFF00 !important;
+  color: #FFFF00 !important;
+  background: #222000 !important;
+}
