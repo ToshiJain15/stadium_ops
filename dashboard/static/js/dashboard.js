@@ -17,6 +17,12 @@ const state = window.stadiumState || {
   ecoCO2: 42.0
 };
 
+// Get CSRF Token from meta tag
+const getCsrfToken = () => {
+  const meta = document.querySelector('meta[name="csrf-token"]');
+  return meta ? meta.getAttribute('content') : '';
+};
+
 // Toggle guided tour camera animations
 window.toggleAutoTour = function() {
   state.autoTourActive = !state.autoTourActive;
@@ -197,7 +203,10 @@ async function submitChatQuery() {
   try {
     const response = await fetch('/api/chat', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCsrfToken()
+      },
       body: JSON.stringify({
         prompt: queryText,
         context: `Crowd: ${state.crowdCount}, AI Confidence: ${state.aiConfidence}%, Metro Wait: ${state.metroTime}m`
@@ -205,7 +214,10 @@ async function submitChatQuery() {
     });
 
     const data = await response.json();
-    const reply = data.response || 'No operational advice generated.';
+    let reply = data.response || 'No operational advice generated.';
+    if (data.mock_mode) {
+      reply = '🟠 [FALLBACK MODE] ' + reply;
+    }
 
     const panel = document.getElementById('chat-response-panel');
     const panelText = document.getElementById('chat-response-text');
@@ -252,12 +264,18 @@ async function submitConciergeCommand(forcedText = null) {
   try {
     const response = await fetch('/api/concierge', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCsrfToken()
+      },
       body: JSON.stringify({ prompt: queryText, language: conciergeLanguage })
     });
 
     const data = await response.json();
-    const reply = data.response || 'Connection error. Please try again.';
+    let reply = data.response || 'Connection error. Please try again.';
+    if (data.mock_mode) {
+      reply = '🟠 [FALLBACK MODE] ' + reply;
+    }
 
     const panel = document.getElementById('concierge-response-panel');
     const panelText = document.getElementById('concierge-response-text');
@@ -931,7 +949,10 @@ async function fetchIntelligenceFeed() {
   try {
     const res = await fetch('/api/intelligence', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCsrfToken()
+      },
       body: JSON.stringify({ crowdCount: state.crowdCount, metroTime: state.metroTime })
     });
 

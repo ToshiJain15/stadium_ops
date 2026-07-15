@@ -1,0 +1,287 @@
+<!-- ================= CONCIERGE TAB ================= -->
+<section id="tab-Concierge" class="tab-section hidden flex flex-col gap-10">
+  
+  <!-- SUB-TAB 1: STADIUM GUIDE (hidden by default) -->
+  <div id="concierge-subtab-guide" class="hidden animate-fade-in flex flex-col gap-8">
+    <div class="flex flex-wrap gap-5 justify-between items-center">
+      <div>
+        <h1 class="display-text text-5xl mb-2.5">Stadium Guide</h1>
+        <p class="text-white/60 text-sm">Interactive directory and facilities routing for Lusail Stadium.</p>
+      </div>
+      <div class="border border-[var(--primary)]/50 px-5 py-2.5 rounded-[30px] text-[var(--primary)] text-xs font-bold bg-[var(--primary)]/5">
+        FACILITIES DIRECTORY
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <!-- Facility: Lounge -->
+      <div onclick="selectFacility('lounge')" class="glass-panel p-6 flex items-start gap-4 cursor-pointer hover:border-[var(--primary)] hover:shadow-[0_0_20px_var(--primary-glow)] transition-all duration-300">
+        <span class="text-3xl select-none">🥂</span>
+        <div>
+          <h4 class="text-white font-semibold text-base mb-1">Lusail Royal Lounge</h4>
+          <p class="text-white/60 text-xs leading-relaxed">Level 4 East Wing. Open. Serving custom refreshments, caviar selection, and premium beverages.</p>
+        </div>
+      </div>
+      
+      <!-- Facility: Helipad -->
+      <div onclick="selectFacility('helipad')" class="glass-panel p-6 flex items-start gap-4 cursor-pointer hover:border-[var(--primary)] hover:shadow-[0_0_20px_var(--primary-glow)] transition-all duration-300">
+        <span class="text-3xl select-none">🚁</span>
+        <div>
+          <h4 class="text-white font-semibold text-base mb-1">Sector North Helipad</h4>
+          <p class="text-white/60 text-xs leading-relaxed">Level 6 roof access. Pre-authorized clearance required for helicopter shuttle dispatch.</p>
+        </div>
+      </div>
+      
+      <!-- Facility: Valet -->
+      <div onclick="selectFacility('valet')" class="glass-panel p-6 flex items-start gap-4 cursor-pointer hover:border-[var(--primary)] hover:shadow-[0_0_20px_var(--primary-glow)] transition-all duration-300">
+        <span class="text-3xl select-none">🚗</span>
+        <div>
+          <h4 class="text-white font-semibold text-base mb-1">Valet Access Zone A</h4>
+          <p class="text-white/60 text-xs leading-relaxed">West Gate entry. Limousine pickup/drop-off lanes monitored by security units.</p>
+        </div>
+      </div>
+      
+      <!-- Facility: Elevators -->
+      <div onclick="selectFacility('elevator')" class="glass-panel p-6 flex items-start gap-4 cursor-pointer hover:border-[var(--primary)] hover:shadow-[0_0_20px_var(--primary-glow)] transition-all duration-300">
+        <span class="text-3xl select-none">♿</span>
+        <div>
+          <h4 class="text-white font-semibold text-base mb-1">Step-Free Elevator Lobby</h4>
+          <p class="text-white/60 text-xs leading-relaxed">Lobby 3. Connects VIP suite level 4 directly to the lower deck main gate.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUB-TAB 2: ROYAL CONCIERGE (Shown by default) -->
+  <div id="concierge-subtab-concierge" class="animate-fade-in flex flex-col gap-10">
+    <div class="flex flex-wrap gap-10 min-h-[350px]">
+      <!-- Left: Private Digital Concierge Inquire -->
+      <div class="flex-[1.2] flex flex-col pr-5">
+        <h3 class="text-xs text-[var(--primary)] tracking-[2px] mb-5 font-semibold">PRIVATE DIGITAL CONCIERGE</h3>
+        <h1 class="display-text text-6xl mb-5 leading-[1.1]">
+          Welcome, <span class="text-[var(--primary)]">Your Grace.</span>
+        </h1>
+        <p class="text-white/70 text-base leading-relaxed mb-6 max-w-[80%]">
+          Our generative intelligence is at your disposal for an unparalleled tournament experience. How may we
+          assist your journey today?
+        </p>
+
+        <!-- Quick Suggestions Pills -->
+        <div class="flex flex-wrap gap-2.5 mb-5">
+          <button onclick="submitQuickConcierge('Check Heliport Clearance')" class="suggestion-pill">✦ Check
+            Heliport Clearance</button>
+          <button onclick="submitQuickConcierge('View Gourmet Dining Menu')" class="suggestion-pill">✦ View Gourmet
+            Dining Menu</button>
+          <button onclick="submitQuickConcierge('Sentinel Protocol Status')" class="suggestion-pill">✦ Sentinel
+            Protocol Status</button>
+          <button onclick="submitQuickConcierge('Suite Climate Status')" class="suggestion-pill">✦ Suite Climate
+            Status</button>
+        </div>
+
+        <!-- Concierge Response panel -->
+        <div id="concierge-response-panel"
+          class="hidden glass-panel animate-fade-in p-5 mb-[30px] border-l-4 border-[var(--primary)] bg-[var(--primary)]/5">
+          <p id="concierge-response-text" class="m-0 text-sm text-white leading-relaxed"></p>
+        </div>
+
+        <!-- Command input bar -->
+        <div class="flex gap-[15px] mb-10 bg-white/5 p-2 rounded-[40px] border border-white/10">
+          <div class="flex items-center pl-5 gap-[15px] flex-1">
+            <span class="dot-indicator"></span>
+            <input type="text" id="concierge-query-input"
+              placeholder="Inquire about stadium protocols, catering, or transport..."
+              class="w-full bg-transparent border-none text-white text-sm outline-none" />
+          </div>
+          <button id="concierge-submit-btn"
+            class="btn-primary py-3 px-[30px] shadow-[0_0_20px_rgba(252,209,90,0.2)]">
+            COMMAND
+          </button>
+        </div>
+
+        <!-- Language preference dialer -->
+        <div>
+          <p class="text-[10px] text-white/50 tracking-[1px] mb-[15px]">PREFERRED DIALECTS</p>
+          <div class="flex flex-wrap gap-2.5">
+            <button onclick="selectConciergeLanguage('EN')" class="lang-btn active">EN</button>
+            <button onclick="selectConciergeLanguage('AR')" class="lang-btn">AR</button>
+            <button onclick="selectConciergeLanguage('FR')" class="lang-btn">FR</button>
+            <button onclick="selectConciergeLanguage('ES')" class="lang-btn">ES</button>
+            <button onclick="selectConciergeLanguage('PT')" class="lang-btn">PT</button>
+            <button onclick="selectConciergeLanguage('ZH')" class="lang-btn">ZH</button>
+            
+            <!-- Hidden extra languages -->
+            <button onclick="selectConciergeLanguage('IT')" class="lang-btn hidden extra-lang">IT</button>
+            <button onclick="selectConciergeLanguage('DE')" class="lang-btn hidden extra-lang">DE</button>
+            <button onclick="selectConciergeLanguage('JA')" class="lang-btn hidden extra-lang">JA</button>
+            <button onclick="selectConciergeLanguage('KO')" class="lang-btn hidden extra-lang">KO</button>
+            <button onclick="selectConciergeLanguage('RU')" class="lang-btn hidden extra-lang">RU</button>
+            <button onclick="selectConciergeLanguage('TR')" class="lang-btn hidden extra-lang">TR</button>
+            
+            <button id="toggle-more-languages-btn" onclick="toggleMoreLanguages()"
+              class="px-4 py-2 bg-white/5 border-none text-white/40 rounded text-xs cursor-pointer select-none">+6 More</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right side cards info -->
+      <div class="flex-1 flex flex-col gap-5 min-w-[350px]">
+        <div class="flex gap-5 flex-1">
+          <div class="glass-panel flex-1 p-[35px_25px] flex flex-col justify-between"
+            style="background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=500&q=80') !important; background-size: cover !important; background-position: center !important;">
+            <span class="text-3xl text-[var(--primary)] mb-5">🏟️</span>
+            <div>
+              <p class="m-0 text-[10px] text-white/60 tracking-[1px]">LUSAIL STADIUM</p>
+              <p class="display-text m-0 text-xl">Elite Suite 402</p>
+            </div>
+          </div>
+          <div class="glass-panel flex-1 p-[35px_25px] flex flex-col justify-between"
+            style="background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=500&q=80') !important; background-size: cover !important; background-position: center !important;">
+            <span class="text-3xl text-[var(--primary)] mb-5">🌡️</span>
+            <div>
+              <p class="m-0 text-[10px] text-white/60 tracking-[1px]">PITCH CLIMATE</p>
+              <p class="display-text m-0 text-xl">22°C Controlled</p>
+            </div>
+          </div>
+        </div>
+
+        <button onclick="dispatchInfoAlert('Security protocol SENTINEL verified.')"
+          class="glass-panel p-5 flex items-center justify-between bg-green-500/5 border-green-500/20 w-full cursor-pointer text-left">
+          <div class="flex items-center gap-5">
+            <div class="w-10 h-10 rounded-full bg-[var(--success)] flex items-center justify-center">
+              <span class="text-black text-lg">🛡️</span>
+            </div>
+            <div>
+              <h4 class="m-0 mb-1 text-base text-white">SECURITY CLEARANCE</h4>
+              <p class="m-0 text-xs text-white/60">Royal Access Granted</p>
+            </div>
+          </div>
+          <span class="text-white text-lg">›</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Bottom Timeline: My Royal Journey -->
+    <div class="flex-1 pt-5">
+      <h3 class="display-text text-xl text-[var(--primary)] flex items-center gap-[15px] mb-[50px]">
+        <span>📜</span> MY ROYAL JOURNEY
+      </h3>
+
+      <div class="flex justify-between relative px-10 mb-[30px]">
+        <!-- Center Connecting Line -->
+        <div class="absolute top-[30px] left-[80px] right-[80px] h-[2px] bg-white/10 z-0"></div>
+
+        <!-- Timeline Stage 1 -->
+        <div onclick="selectTimelineStage(0)"
+          class="timeline-node flex flex-col items-center relative z-10 cursor-pointer" id="timeline-stage-0">
+          <div
+            class="node-circle w-[60px] h-[60px] rounded-full bg-[var(--background)] border border-white/10 flex items-center justify-center mb-5">
+            <span class="text-2xl">🚙</span>
+          </div>
+          <p class="m-0 mb-1 text-[13px] text-white/70">14:00</p>
+          <h4 class="m-0 mb-1 text-[13px] text-white tracking-[1px] font-bold">CHAUFFEUR ARRIVAL</h4>
+          <p class="m-0 text-[11px] text-white/50">West Gate Entry</p>
+        </div>
+
+        <!-- Timeline Stage 2 -->
+        <div onclick="selectTimelineStage(1)"
+          class="timeline-node flex flex-col items-center relative z-10 cursor-pointer active"
+          id="timeline-stage-1">
+          <div
+            class="absolute top-[-25px] bg-green-500/20 text-[var(--success)] px-3 py-1 rounded-full text-[9px] font-bold tracking-[1px] border border-green-500/50 whitespace-nowrap">
+            ● LIVE STATUS
+          </div>
+          <div
+            class="node-circle w-[60px] h-[60px] rounded-full bg-[var(--background)] border-2 border-[var(--success)] flex items-center justify-center mb-5 shadow-[0_0_15px_var(--success-glow)]">
+            <span class="text-2xl">🍽️</span>
+          </div>
+          <p class="m-0 mb-1 text-[13px] text-[var(--success)]">15:30 (NOW)</p>
+          <h4 class="m-0 mb-1 text-[13px] text-white tracking-[1px] font-bold">HOSPITALITY SUITE</h4>
+          <p class="m-0 text-[11px] text-white/50">Champagne Reception</p>
+        </div>
+
+        <!-- Timeline Stage 3 -->
+        <div onclick="selectTimelineStage(2)"
+          class="timeline-node flex flex-col items-center relative z-10 cursor-pointer opacity-50"
+          id="timeline-stage-2">
+          <div
+            class="node-circle w-[60px] h-[60px] rounded-full bg-[var(--background)] border border-white/10 flex items-center justify-center mb-5">
+            <span class="text-2xl">⚽</span>
+          </div>
+          <p class="m-0 mb-1 text-[13px] text-white/70">18:00</p>
+          <h4 class="m-0 mb-1 text-[13px] text-white tracking-[1px] font-bold">MATCH KICKOFF</h4>
+          <p class="m-0 text-[11px] text-white/50">Opening Ceremony</p>
+        </div>
+
+        <!-- Timeline Stage 4 -->
+        <div onclick="selectTimelineStage(3)"
+          class="timeline-node flex flex-col items-center relative z-10 cursor-pointer opacity-50"
+          id="timeline-stage-3">
+          <div
+            class="node-circle w-[60px] h-[60px] rounded-full bg-[var(--background)] border border-white/10 flex items-center justify-center mb-5">
+            <span class="text-2xl">✈️</span>
+          </div>
+          <p class="m-0 mb-1 text-[13px] text-white/70">21:30</p>
+          <h4 class="m-0 mb-1 text-[13px] text-white tracking-[1px] font-bold">VIP DEPARTURE</h4>
+          <p class="m-0 text-[11px] text-white/50">Heliport Access</p>
+        </div>
+      </div>
+
+      <!-- Dynamic Logistics Log Details Panel -->
+      <div id="timeline-details-panel"
+        class="glass-panel animate-fade-in p-6 mx-10 border-l-4 border-[var(--primary)] flex items-center gap-5 bg-white/2">
+        <span id="timeline-details-icon" class="text-4xl">🍽️</span>
+        <div>
+          <div class="flex items-center gap-[15px] mb-2">
+            <span id="timeline-details-time" class="text-xs text-[var(--primary)] tracking-[1px] font-bold">15:30
+              (NOW)</span>
+            <span class="w-1 h-1 rounded-full bg-white/30"></span>
+            <h4 id="timeline-details-title" class="m-0 text-[15px] text-white font-semibold tracking-wide">
+              HOSPITALITY SUITE (Champagne Reception)</h4>
+          </div>
+          <p id="timeline-details-text" class="m-0 text-sm text-white/80 leading-relaxed">
+            Logistics details: Dom Pérignon 2012 champagne served on arrival. Beluga caviar, white truffle bites,
+            and personalized selection. Room climate stabilized at 21.5°C.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUB-TAB 3: PROTOCOL (hidden by default) -->
+  <div id="concierge-subtab-protocol" class="hidden animate-fade-in flex flex-col gap-8">
+    <div class="flex flex-wrap gap-5 justify-between items-center">
+      <div>
+        <h1 class="display-text text-5xl mb-2.5">VIP Protocol</h1>
+        <p class="text-white/60 text-sm">Clearance status, protection assignments, and tactical deployment status.</p>
+      </div>
+      <div class="border border-red-500/50 px-5 py-2.5 rounded-[30px] text-red-500 text-xs font-bold bg-red-500/10">
+        PROTOCOL SECURE
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-4">
+      <div class="glass-panel p-6 flex justify-between items-center">
+        <div>
+          <h4 class="text-white font-semibold text-base mb-1">Sentinel Protection Matrix</h4>
+          <p class="text-white/60 text-xs font-medium">Biometric scanners linked across Level 4 entries.</p>
+        </div>
+        <span class="text-[var(--success)] font-semibold text-xs border border-[var(--success)] px-3 py-1 rounded bg-[var(--success)]/10">ACTIVE</span>
+      </div>
+      <div class="glass-panel p-6 flex justify-between items-center">
+        <div>
+          <h4 class="text-white font-semibold text-base mb-1">Elite Guard Assignment</h4>
+          <p class="text-white/60 text-xs font-medium">Unit Alpha patrolling suite corridors.</p>
+        </div>
+        <span class="text-[var(--success)] font-semibold text-xs border border-[var(--success)] px-3 py-1 rounded bg-[var(--success)]/10">ASSIGNED</span>
+      </div>
+      <div class="glass-panel p-6 flex justify-between items-center">
+        <div>
+          <h4 class="text-white font-semibold text-base mb-1">State Visit Red-Lane Authorization</h4>
+          <p class="text-white/60 text-xs font-medium">Escort details cleared for heliport dispatch.</p>
+        </div>
+        <span class="text-[var(--primary)] font-semibold text-xs border border-[var(--primary)] px-3 py-1 rounded bg-[var(--primary)]/10">STANDBY</span>
+      </div>
+    </div>
+  </div>
+
+</section>

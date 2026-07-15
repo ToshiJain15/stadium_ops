@@ -1,0 +1,48 @@
+<!-- ================= STAFF & VOLUNTEERS TAB ================= -->
+<section id="tab-Staff" class="tab-section hidden flex-col gap-5" aria-labelledby="tab-staff-h1">
+  <h1 id="tab-staff-h1" class="sr-only">Staff &amp; Volunteer Management</h1>
+  
+  <!-- AI Briefing -->
+  <div class="glass-panel p-6 border border-[var(--primary)] rounded-xl flex items-start gap-4 bg-[var(--primary)]/10">
+    <span class="text-3xl">🤖</span>
+    <div>
+      <h3 class="text-[10px] text-[var(--primary)] tracking-[1px] font-bold mb-2">AI PRE-MATCH BRIEFING</h3>
+      <p id="staff-ai-briefing" class="text-sm text-white/90 leading-relaxed m-0">Loading AI analysis...</p>
+    </div>
+  </div>
+
+  <div class="flex flex-wrap gap-5">
+    <!-- Shifts -->
+    <div class="flex-1 min-w-[300px] glass-panel p-[30px] rounded-xl border border-[var(--surface-border)]">
+      <div class="flex justify-between items-center mb-5">
+        <h3 class="m-0 text-base text-[var(--primary)] font-semibold">Shift Schedule</h3>
+        <span class="text-xs text-white/50" id="staff-total-count">0 Staff</span>
+      </div>
+      <div id="staff-shifts-container" class="flex flex-col gap-3">
+        <!-- Shift cards injected here -->
+      </div>
+    </div>
+
+    <!-- Zones -->
+    <div class="flex-1 min-w-[300px] glass-panel p-[30px] rounded-xl border border-[var(--surface-border)]">
+      <div class="flex justify-between items-center mb-5">
+        <h3 class="m-0 text-base text-[var(--primary)] font-semibold">Zone Deployment</h3>
+        <span class="text-xs text-white/50" id="staff-active-zones">0 Zones</span>
+      </div>
+      <div id="staff-zones-container" class="flex flex-col gap-3">
+        <!-- Zone cards injected here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Task Board -->
+  <div class="glass-panel p-[30px] rounded-xl border border-[var(--surface-border)]">
+    <div class="flex justify-between items-center mb-5">
+      <h3 class="m-0 text-base text-[var(--primary)] font-semibold">Active Priority Tasks</h3>
+      <button class="btn-outline" onclick="pollStaffAPI()">Refresh AI Board</button>
+    </div>
+    <div id="staff-tasks-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Tasks injected here -->
+    </div>
+  </div>
+</section>

@@ -1,0 +1,50 @@
+<!-- SIDEBAR OVERLAY -->
+<aside id="sidebar-menu"
+  class="hidden absolute top-0 left-0 bottom-[80px] w-[280px] bg-[var(--background-panel)] border-r border-[var(--surface-border)] z-20 flex flex-col py-5">
+  <!-- Sidebar Header -->
+  <div class="px-5 mb-[30px]">
+    <div class="flex items-center gap-[15px]">
+      <div
+        class="w-10 h-10 rounded-lg bg-[var(--surface)] border border-[var(--primary)] flex items-center justify-center">
+        <span class="text-[1.2rem]">🛡️</span>
+      </div>
+      <div>
+        <h4 class="m-0 text-[var(--primary)] text-sm font-semibold">Operations Center</h4>
+        <p class="m-0 text-[10px] text-white/60">Lusail Stadium Hub</p>
+      </div>
+    </div>
+    <div
+      class="mt-[15px] inline-block border border-[var(--primary)] text-[var(--primary)] px-2.5 py-1 rounded text-[10px] tracking-[1px]">
+      ELITE STATUS
+    </div>
+  </div>
+
+  <!-- Navigation Links -->
+  <nav class="flex-1" aria-label="Main Navigation">
+    <div class="sidebar-item active" onclick="switchActiveTab('Intelligence')" data-tab="Intelligence" role="tab" aria-selected="true" tabindex="0">
+      <span>⚽</span>
+      <span>Tournament Overview</span>
+    </div>
+    <div class="sidebar-item" onclick="switchActiveTab('Access')" data-tab="Access" role="tab" aria-selected="false" tabindex="-1">
+      <span>🛡️</span>
+      <span>Secure Access</span>
+    </div>
+    <div class="sidebar-item" onclick="switchActiveTab('Concierge')" data-tab="Concierge" role="tab" aria-selected="false" tabindex="-1">
+      <span>✨</span>
+      <span>VIP Concierge</span>
+    </div>
+    <div class="sidebar-item" onclick="switchActiveTab('Transport')" data-tab="Transport" role="tab" aria-selected="false" tabindex="-1">
+      <span>🍃</span>
+      <span>Eco-Dashboard</span>
+    </div>
+    <!-- Fix 3: Staff Hub navigation item -->
+    <div class="sidebar-item" onclick="switchActiveTab('Staff')" data-tab="Staff" role="tab" aria-selected="false" tabindex="-1">
+      <span aria-hidden="true">🤝</span>
+      <span>Staff & Volunteers</span>
+    </div>
+    <div class="sidebar-item" onclick="dispatchInfoAlert('Health check: All systems nominal. v1.2.0')" data-tab="Settings" role="tab" aria-selected="false" tabindex="-1">
+      <span aria-hidden="true">⚙️</span>
+      <span>System Settings</span>
+    </div>
+  </nav>
+</aside>

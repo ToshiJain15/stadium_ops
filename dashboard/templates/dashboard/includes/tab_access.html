@@ -1,0 +1,207 @@
+<!-- ================= ACCESS TAB ================= -->
+<section id="tab-Access" class="tab-section hidden flex flex-col gap-[30px]">
+  <!-- Top Title header -->
+  <div class="flex flex-wrap gap-5 min-h-[100px] justify-between items-center">
+    <div class="flex-1 flex flex-col justify-center min-w-[350px]">
+      <div class="flex items-center gap-2.5 mb-2.5">
+        <span class="dot-indicator"></span>
+        <span class="text-xs text-[var(--success)] tracking-[1px] font-bold">AI CORE ACTIVE</span>
+      </div>
+      <h1 class="display-text text-6xl m-0 leading-none">Secure Access</h1>
+    </div>
+
+    <div class="border border-[var(--primary)]/50 px-5 py-2.5 rounded-[30px] flex items-center gap-2.5">
+      <span class="text-[var(--primary)]">🛡️</span>
+      <span class="text-[var(--primary)] text-xs tracking-[1px] font-bold">LUSAIL STADIUM HUB • LEVEL 4</span>
+    </div>
+  </div>
+
+  <!-- Main Access Layout -->
+  <div class="flex flex-wrap gap-[30px] flex-1">
+    <!-- Left: Biometric Pass Verification -->
+    <div class="glass-panel flex-1 p-10 flex flex-col items-center min-w-[350px]"
+      style="background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.95)), url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=500&q=80') !important; background-size: cover !important; background-position: center !important;">
+      <div class="flex justify-between items-start mb-10 w-full">
+        <div>
+          <h2 class="display-text text-3xl m-0 mb-2.5">Biometric Pass</h2>
+          <p class="m-0 text-[10px] text-white/50 tracking-[2px]">IDENTITY VERIFIED • TIER 1</p>
+        </div>
+        <button onclick="dispatchInfoAlert('Broadcasting NFC token...')"
+          class="w-10 h-10 rounded-full bg-[var(--primary)]/10 text-[var(--primary)] flex items-center justify-center text-lg border-none cursor-pointer">
+          🔊
+        </button>
+      </div>
+
+      <div class="w-full flex-1 flex flex-col items-center justify-center bg-white/3 rounded-[20px] p-10 mb-10">
+        <div
+          class="w-[150px] h-[150px] rounded-full border border-[var(--primary)]/30 relative flex items-center justify-center shadow-[0_0_40px_rgba(252,209,90,0.1)] mb-[30px]">
+          <span class="text-6xl text-[var(--primary)] select-none">☝️</span>
+        </div>
+        <div
+          class="bg-[var(--success)]/10 text-[var(--success)] px-5 py-2 rounded-full text-xs font-bold border border-[var(--success)]/30 flex items-center gap-2">
+          <span>✓</span> AI VERIFIED
+        </div>
+      </div>
+
+      <div class="w-full flex flex-col gap-5 mb-10">
+        <div class="flex justify-between items-center border-b border-white/10 pb-2.5">
+          <span class="text-white/50 text-sm">Holder</span>
+          <span class="text-base font-semibold">Julian Al-Fayed</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-white/50 text-sm">Clearance</span>
+          <span class="text-base font-bold text-[var(--primary)]">EXECUTIVE GOLD</span>
+        </div>
+      </div>
+
+      <div class="w-full flex flex-col gap-[15px]">
+        <button onclick="toggleAccessModal('apple', true)"
+          class="btn-primary w-full py-4 rounded-xl flex justify-center gap-2.5 font-bold">
+          <span></span> Add to Apple Wallet
+        </button>
+        <button onclick="toggleAccessModal('transfer', true)"
+          class="w-full py-4 bg-transparent border border-white/20 text-white rounded-xl cursor-pointer font-semibold">
+          Transfer Ticket
+        </button>
+      </div>
+    </div>
+
+    <!-- Right: Sentinel Floor Plan Map & Visualizer -->
+    <div class="flex-[1.5] flex flex-col gap-[30px] min-w-[400px]">
+      <div class="glass-panel flex-2 flex flex-col overflow-hidden min-h-[380px]">
+        <!-- Live 2D Floor Plan SVG overlay -->
+        <div
+          class="flex-1 bg-[#141414] relative overflow-hidden min-h-[230px] border-b border-[var(--surface-border)]">
+          <!-- Grid pattern -->
+          <div
+            class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:20px_20px] opacity-80 pointer-events-none">
+          </div>
+
+          <!-- SVG Level 4 Blueprint -->
+          <svg class="w-full h-full p-5" viewBox="0 0 100 60">
+            <!-- Perimeter boundary -->
+            <rect x="5" y="5" width="90" height="50" rx="3" fill="none" stroke="rgba(255,255,255,0.1)"
+              stroke-width="0.8" />
+            <!-- Walls -->
+            <line x1="25" y1="5" x2="25" y2="40" stroke="rgba(255,255,255,0.08)" stroke-width="0.6" />
+            <line x1="75" y1="20" x2="75" y2="55" stroke="rgba(255,255,255,0.08)" stroke-width="0.6" />
+            <line x1="25" y1="40" x2="75" y2="40" stroke="rgba(255,255,255,0.08)" stroke-width="0.6" />
+
+            <!-- Floor text labels -->
+            <text x="12" y="15" fill="rgba(255,255,255,0.2)" font-size="3" text-anchor="middle">SUITE 401</text>
+            <rect x="5" y="5" width="14" height="15" rx="1" fill="none" stroke="rgba(255,255,255,0.05)"
+              stroke-width="0.5" />
+
+            <text x="12" y="32" fill="var(--primary)" opacity="0.8" font-size="3.2" font-weight="bold"
+              text-anchor="middle">SUITE 402 (VIP)</text>
+            <rect x="5" y="20" width="18" height="20" rx="1" fill="rgba(252,209,90,0.02)"
+              stroke="rgba(252,209,90,0.2)" stroke-width="0.6" />
+
+            <text x="85" y="15" fill="rgba(255,255,255,0.2)" font-size="3" text-anchor="middle">SUITE 403</text>
+            <rect x="76" y="5" width="19" height="15" rx="1" fill="none" stroke="rgba(255,255,255,0.05)"
+              stroke-width="0.5" />
+
+            <text x="85" y="35" fill="rgba(255,255,255,0.2)" font-size="3" text-anchor="middle">SUITE 404</text>
+            <rect x="76" y="20" width="19" height="22" rx="1" fill="none" stroke="rgba(255,255,255,0.05)"
+              stroke-width="0.5" />
+
+            <text x="50" y="25" fill="rgba(255,255,255,0.15)" font-size="4.5" text-anchor="middle">MAIN VIP
+              CORRIDOR</text>
+
+            <!-- SVG Layer Elements: Guards -->
+            <g id="map-layer-guards" class="transition-opacity duration-300">
+              <circle cx="32" cy="18" r="1.5" fill="var(--success)" class="cursor-pointer animate-pulse-glow"
+                onclick="dispatchInfoAlert('Sentinel Patrol Unit #1 - Position: Suite Corridor. Telemetry: Nominal.')" />
+              <circle cx="68" cy="35" r="1.5" fill="var(--success)" class="cursor-pointer animate-pulse-glow"
+                onclick="dispatchInfoAlert('Sentinel Patrol Unit #2 - Position: East Lift Lobby. Telemetry: Nominal.')" />
+              <circle cx="15" cy="45" r="1.5" fill="var(--success)" class="cursor-pointer animate-pulse-glow"
+                onclick="dispatchInfoAlert('Sentinel Patrol Unit #3 - Position: Curbside Entry. Telemetry: Nominal.')" />
+            </g>
+
+            <!-- SVG Layer Elements: Gates -->
+            <g id="map-layer-gates" class="transition-opacity duration-300">
+              <polygon points="25,28 27,24 23,24" fill="var(--primary)" class="cursor-pointer"
+                onclick="dispatchInfoAlert('Access Gate North Lobby - Status: Secure. Biometric link online.')" />
+              <polygon points="75,44 77,40 73,40" fill="var(--primary)" class="cursor-pointer"
+                onclick="dispatchInfoAlert('Access Gate South Lobby - Status: Secure. Biometric link online.')" />
+            </g>
+
+            <!-- SVG Layer Elements: Cameras -->
+            <g id="map-layer-cams" class="transition-opacity duration-300">
+              <circle cx="45" cy="8" r="1" fill="#2979FF" class="cursor-pointer"
+                onclick="dispatchInfoAlert('Camera Cam-402 - Direct Feed: Suite Entrance. Status: Online.')" />
+              <circle cx="55" cy="48" r="1" fill="#2979FF" class="cursor-pointer"
+                onclick="dispatchInfoAlert('Camera Cam-404 - Direct Feed: VIP Elevator Bank. Status: Online.')" />
+            </g>
+          </svg>
+
+          <!-- SVG overlays indicators -->
+          <div class="absolute top-[15px] left-[15px] flex flex-col gap-2 pointer-events-none">
+            <div
+              class="bg-green-500/10 border border-green-500/30 px-3 py-1 rounded-[20px] flex items-center gap-1.5">
+              <span class="dot-indicator"></span>
+              <span class="text-white text-[11px] font-semibold">SAFE ZONE ACTIVE</span>
+            </div>
+            <div class="bg-white/8 border border-white/15 px-3 py-1 rounded-[20px] flex items-center gap-1.5">
+              <span class="text-[var(--primary)] text-xs">👥</span>
+              <span class="text-white text-[11px] font-semibold">32 UNITS DEPLOYED</span>
+            </div>
+          </div>
+
+          <!-- Layer Filters Overlay Controls inside SVG -->
+          <div class="absolute bottom-[15px] right-[15px] flex gap-2 z-[5]">
+            <button id="filter-guards-btn" onclick="toggleMapLayer('guards')"
+              class="btn-primary px-2.5 py-1 text-[10px] rounded-lg">Guards • ON</button>
+            <button id="filter-gates-btn" onclick="toggleMapLayer('gates')"
+              class="btn-primary px-2.5 py-1 text-[10px] rounded-lg">Gates • ON</button>
+            <button id="filter-cams-btn" onclick="toggleMapLayer('cams')"
+              class="btn-primary px-2.5 py-1 text-[10px] rounded-lg">Cams • ON</button>
+          </div>
+        </div>
+
+        <!-- Floor Plan description footer -->
+        <div class="p-6 flex flex-wrap justify-between items-center gap-5">
+          <div class="flex-1 min-w-[200px]">
+            <h2 class="display-text text-2xl m-0 mb-2">Protocol: Sentinel</h2>
+            <p class="m-0 text-sm text-white/60 leading-relaxed">
+              Real-time tracking of elite security personnel, biometric entry points, and visual security cameras
+              across Level 4.
+            </p>
+          </div>
+          <div class="flex gap-[15px]">
+            <button onclick="dispatchInfoAlert('Displaying floor filters guide. All sensors active.')"
+              class="btn-outline px-4 py-2 flex items-center gap-2 rounded-xl text-sm">
+              <span>≢</span> Guide
+            </button>
+            <button onclick="toggleAccessModal('logs', true)"
+              class="btn-primary px-4 py-2 flex items-center gap-2 rounded-xl text-sm font-semibold">
+              <span>⬇</span> Log
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Emergency & Response Buttons Grid -->
+      <div class="flex flex-wrap gap-[30px] min-h-[160px]">
+        <button onclick="toggleAccessModal('incident', true)"
+          class="glass-panel flex-1 min-w-[200px] p-[30px] bg-gradient-to-br from-red-500/10 to-[#1a1a1a]/90 border border-red-500/30 flex flex-col justify-center text-left cursor-pointer">
+          <p class="m-0 mb-2.5 text-xs text-red-500 font-bold tracking-[2px]">RAPID RESPONSE</p>
+          <div class="flex justify-between items-center w-full">
+            <h2 class="display-text text-xl m-0 text-white font-semibold">Report Incident</h2>
+            <span class="text-2xl text-red-500">⚠️</span>
+          </div>
+        </button>
+
+        <div class="glass-panel flex-1 min-w-[200px] p-[30px] flex flex-col justify-center">
+          <div class="flex items-center gap-[15px] mb-[15px]">
+            <span class="text-xl text-[var(--primary)]">✨</span>
+            <h3 class="m-0 text-base text-white font-semibold">AI Triage Active</h3>
+          </div>
+          <p class="m-0 text-xs text-white/60 leading-relaxed">
+            Emergency calls are automatically prioritized by severity and proximity to deployed security units.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -98,9 +99,23 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'dashboard' / 'static',
 ]
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Fix 2: Security headers (defence-in-depth)
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = 'DENY'
+
+# --- DEPLOYMENT PROXY CONFIGURATION (RENDER / HEROKU) ---
+# Tell Django it's secure if the reverse proxy sends the X-Forwarded-Proto header
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Allow CSRF POST requests from Render app subdomains and local
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.onrender.com',
+    'https://*.pythonanywhere.com',
+    'https://*.hf.space',
+    'http://localhost:8000',
+    'http://127.0.0.1:8000'
+]

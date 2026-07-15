@@ -17,7 +17,9 @@ class SecurityHeadersMiddleware:
 
     def __call__(self, request):
         response = self.get_response(request)
+        return self.add_headers(response)
 
+    def add_headers(self, response):
         # Content Security Policy — whitelist only trusted CDNs
         csp = (
             "default-src 'self'; "

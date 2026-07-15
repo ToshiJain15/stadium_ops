@@ -1,0 +1,184 @@
+<!-- ================= TRANSPORT TAB ================= -->
+<section id="tab-Transport" class="tab-section hidden flex flex-col gap-[30px]">
+  <div class="flex flex-wrap gap-[30px] min-h-[300px]">
+    <!-- Elite Eco-Status Progress Bar -->
+    <div class="glass-panel flex-[1.5] p-[30px] flex flex-col justify-between relative min-w-[350px]">
+      <span
+        class="absolute right-[30px] top-[30px] text-8xl text-[var(--success)]/5 select-none pointer-events-none">🍃</span>
+      <div>
+        <h2 class="display-text text-3xl text-[var(--primary)] mb-[15px]">Elite Eco-Status</h2>
+        <p class="text-sm text-white/70 max-w-[70%] leading-relaxed">
+          Your commitment to low-carbon travel has saved <span id="eco-co2-saved">42.0</span>kg of CO2. You're in the top 5% of fans.
+        </p>
+      </div>
+
+      <div>
+        <p class="text-[10px] text-white/50 tracking-[1px] mb-[15px]">CURRENT BALANCE</p>
+        <div class="flex items-end gap-[30px]">
+          <div class="flex items-baseline gap-2.5">
+            <span id="eco-points-balance" class="text-5xl font-bold text-[var(--primary)] leading-none">2,450</span>
+            <span class="text-[var(--success)] text-sm">Points</span>
+          </div>
+          <div class="flex-1 pb-2.5">
+            <div class="w-full h-2 bg-white/10 rounded-full flex relative">
+              <div id="eco-progress-bar" class="h-full bg-gradient-to-r from-[var(--success)] to-[var(--primary)] rounded-full" style="width: 76.5%">
+              </div>
+              <span id="eco-points-remaining" class="absolute right-[-120px] top-[-5px] text-xs text-white/60">750 pts to Platinum</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex gap-[15px] mt-[30px]">
+        <button onclick="toggleTransportModal('merch', true)"
+          class="btn-primary py-3 px-6 flex-1 text-center">Claim Exclusive Merch</button>
+        <button onclick="toggleTransportModal('history', true)"
+          class="py-3 px-6 flex-1 bg-white/5 text-white border border-white/20 rounded-lg cursor-pointer text-center">View
+          History</button>
+      </div>
+    </div>
+
+    <!-- Accessibility Support -->
+    <div class="glass-panel flex-1 p-[30px] flex flex-col min-w-[350px]">
+      <div class="flex flex-col gap-[25px] flex-1">
+        <h3 class="display-text text-xl m-0 text-[var(--primary)]">ACCESSIBILITY SUPPORT</h3>
+
+        <!-- Toggle: High Contrast -->
+        <div class="flex justify-between items-center py-3 border-b border-white/5">
+          <div class="flex items-center gap-3">
+            <span class="text-[18px]">🌓</span>
+            <span class="text-sm text-white/80">High Contrast</span>
+          </div>
+          <button id="toggle-high-contrast-btn" onclick="triggerHighContrastToggle()"
+            aria-label="Toggle High Contrast"
+            class="w-11 h-6 rounded-full relative border-none cursor-pointer flex items-center p-[3px] bg-white/15">
+            <div id="knob-high-contrast"
+              class="w-[18px] h-[18px] bg-white rounded-full transition-all duration-200"></div>
+          </button>
+        </div>
+
+        <!-- Toggle: Wheelchair Routing -->
+        <div class="flex justify-between items-center py-3 border-b border-white/5">
+          <div class="flex items-center gap-3">
+            <span class="text-[18px]">♿</span>
+            <div>
+              <span class="text-sm text-white/80 block">Wheelchair Routing</span>
+              <span id="label-wheelchair" class="text-[11px] text-white/40 flex items-center gap-1 mt-1">
+                <span id="dot-wheelchair" class="w-1.5 h-1.5 rounded-full bg-white/40 inline-block"></span>
+                Inactive
+              </span>
+            </div>
+          </div>
+          <button id="toggle-wheelchair-btn" onclick="triggerWheelchairToggle()"
+            aria-label="Toggle Wheelchair Routing"
+            class="w-11 h-6 rounded-full relative border-none cursor-pointer flex items-center p-[3px] bg-white/15">
+            <div id="knob-wheelchair" class="w-[18px] h-[18px] bg-white rounded-full transition-all duration-200">
+            </div>
+          </button>
+        </div>
+
+        <!-- Toggle: Audio Navigation -->
+        <div class="flex justify-between items-center py-3">
+          <div class="flex items-center gap-3">
+            <span class="text-[18px]">🔊</span>
+            <span class="text-sm text-white/80">Audio Navigation</span>
+          </div>
+          <button id="toggle-audio-btn" onclick="triggerAudioToggle()" aria-label="Toggle Audio Navigation"
+            class="w-11 h-6 rounded-full relative border-none cursor-pointer flex items-center p-[3px] bg-white/15">
+            <div id="knob-audio" class="w-[18px] h-[18px] bg-white rounded-full transition-all duration-200">
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <p class="text-[12px] text-white/40 leading-relaxed mt-5">
+        Accessibility modes optimize all AI-suggested routes for step-free access and increased navigation
+        assistance.
+      </p>
+    </div>
+  </div>
+
+  <!-- The Green Path suggested routes -->
+  <div class="flex-1 flex flex-col">
+    <div class="flex justify-between items-end mb-5">
+      <h2 class="display-text text-3xl m-0">The Green Path</h2>
+      <div class="border border-green-500/50 px-4 py-1.5 rounded-full flex items-center gap-2">
+        <span class="dot-indicator"></span>
+        <span class="text-[var(--success)] text-[11px] tracking-[1px]">AI LIVE OPTIMIZATION</span>
+      </div>
+    </div>
+
+    <div class="flex flex-wrap gap-5 flex-1">
+      <!-- Route Metro Card -->
+      <div id="route-card-metro" class="glass-panel route-card flex-1 min-w-[300px] flex flex-col overflow-hidden border border-transparent transition-all duration-300">
+        <div class="h-[120px] bg-cover bg-center flex items-end p-5"
+          style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=500&q=80');">
+          <h4 class="m-0 text-[var(--primary)] flex items-center gap-2.5 text-lg font-semibold"><span>🚇</span>
+            Gold Line Metro</h4>
+        </div>
+        <div class="p-5 flex-1 flex flex-col justify-between">
+          <div>
+            <div class="flex justify-between mb-[15px]">
+              <span class="font-semibold">Arrival in <span id="route-metro-time" class="text-lg">4
+                  mins</span></span>
+              <span class="bg-green-500/10 text-[var(--success)] px-2 py-1 rounded text-[11px]">-0.8kg CO2</span>
+            </div>
+            <p id="route-metro-desc" class="m-0 text-xs text-white/60 leading-relaxed">
+              Direct route from Doha Port to Lusail Stadium. Accessible boarding at Platform 4.
+            </p>
+          </div>
+          <button id="route-btn-metro" onclick="selectTransportRoute('metro')"
+            class="w-full py-3 bg-white/5 border-none text-white rounded-lg cursor-pointer mt-5">Select
+            Route</button>
+        </div>
+      </div>
+
+      <!-- Route Shuttle Card -->
+      <div id="route-card-shuttle"
+        class="glass-panel route-card flex-1 min-w-[300px] flex flex-col overflow-hidden border border-transparent transition-all duration-300">
+        <div class="h-[120px] bg-cover bg-center flex items-end p-5"
+          style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1570125909232-eb263c188f7e?w=500&q=80');">
+          <h4 class="m-0 text-[var(--primary)] flex items-center gap-2.5 text-lg font-semibold"><span>🚌</span> H2
+            VIP Shuttle</h4>
+        </div>
+        <div class="p-5 flex-1 flex flex-col justify-between">
+          <div>
+            <div class="flex justify-between mb-[15px]">
+              <span class="font-semibold">Arrival in <span id="route-shuttle-time" class="text-lg">8
+                  mins</span></span>
+              <span class="bg-green-500/10 text-[var(--success)] px-2 py-1 rounded text-[11px]">-0.5kg CO2</span>
+            </div>
+            <p id="route-shuttle-desc" class="m-0 text-xs text-white/60 leading-relaxed">
+              Hydrogen-powered private transit with in-seat entertainment and refreshments.
+            </p>
+          </div>
+          <button id="route-btn-shuttle" onclick="selectTransportRoute('shuttle')"
+            class="w-full py-3 bg-white/5 border-none text-white rounded-lg cursor-pointer mt-5">Select VIP Route</button>
+        </div>
+      </div>
+
+      <!-- Route Walking Card -->
+      <div id="route-card-walk" class="glass-panel route-card flex-1 min-w-[300px] flex flex-col overflow-hidden border border-transparent transition-all duration-300">
+        <div class="h-[120px] bg-cover bg-center flex items-end p-5"
+          style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1519331379826-f10be5486c6f?w=500&q=80');">
+          <h4 class="m-0 text-[var(--primary)] flex items-center gap-2.5 text-lg font-semibold"><span>🚶</span>
+            The Green Mile</h4>
+        </div>
+        <div class="p-5 flex-1 flex flex-col justify-between">
+          <div>
+            <div class="flex justify-between mb-[15px]">
+              <span class="font-semibold">Walk time: <span class="text-lg">15 mins</span></span>
+              <span class="bg-green-500/10 text-[var(--success)] px-2 py-1 rounded text-[11px]">Zero Carbon</span>
+            </div>
+            <p id="route-walk-desc" class="m-0 text-xs text-white/60 leading-relaxed">
+              Climate-controlled scenic walkway with interactive World Cup history displays.
+            </p>
+          </div>
+          <button id="route-btn-walk" onclick="selectTransportRoute('walk')"
+            class="w-full py-3 bg-white/5 border-none text-white rounded-lg cursor-pointer mt-5">Start
+            Navigation</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

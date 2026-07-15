@@ -1,0 +1,75 @@
+<!-- Global Toast Alert Container -->
+<div id="toast-container"
+  class="fixed bottom-[100px] right-[20px] flex flex-col-reverse gap-[10px] z-[1000] pointer-events-none max-h-[300px] overflow-hidden">
+  <!-- Dynamic alerts will be appended here by javascript -->
+</div>
+
+<!-- TOP HEADER -->
+<header class="flex justify-between items-center px-10 py-5 border-b border-[var(--surface-border)] z-10">
+  <div class="flex items-center gap-5">
+    <button id="sidebar-toggle-btn" aria-label="Toggle Navigation Sidebar" aria-haspopup="true"
+      class="bg-none border-none text-[var(--primary)] text-2xl cursor-pointer p-0 select-none">
+      ≡
+    </button>
+    <h2 class="display-text text-[var(--primary)] m-0 text-xl tracking-[2px]">WORLD CUP 2026</h2>
+  </div>
+
+  <!-- Right side dynamic sub-nav -->
+  <div class="flex items-center gap-[30px]">
+    <!-- Concierge Sub-Nav (only shown when Concierge Tab is active) -->
+    <!-- Fix 12: Replaced <span onclick> with semantic <button role="tab"> for keyboard accessibility -->
+    <div id="subnav-concierge" class="hidden flex gap-5 text-xs tracking-[1px]" role="tablist" aria-label="Concierge sections">
+      <button class="subnav-link text-white/50 bg-transparent border-none cursor-pointer" role="tab" aria-selected="false" onclick="switchConciergeSubTab(this, 'Stadium Guide view')">STADIUM GUIDE</button>
+      <button class="subnav-link active bg-transparent border-none cursor-pointer" role="tab" aria-selected="true" onclick="switchConciergeSubTab(this, 'Royal Concierge view')">ROYAL CONCIERGE</button>
+      <button class="subnav-link text-white/50 bg-transparent border-none cursor-pointer" role="tab" aria-selected="false" onclick="switchConciergeSubTab(this, 'Protocol view')">PROTOCOL</button>
+    </div>
+
+    <!-- Intelligence Sub-Nav (only shown when Intelligence Tab is active) -->
+    <div id="subnav-intelligence" class="flex flex-col items-end">
+      <span class="text-[10px] text-[#00E676] tracking-[1px] font-bold">OPERATIONS CENTER</span>
+      <span class="text-xs font-semibold flex items-center gap-1.5 select-none">
+        <span class="w-1.5 h-1.5 rounded-full bg-[#00E676] animate-pulse"></span>
+        LUSAIL HUB • <span id="header-live-clock">22:47:00</span>
+      </span>
+    </div>
+
+    <!-- Profile Menu & Details Dropdown -->
+    <div class="relative flex-shrink-0">
+      <button id="profile-menu-btn" aria-label="View user profile settings" aria-haspopup="true" class="w-9 h-9 rounded-full bg-[var(--surface)] border border-[var(--primary)] flex items-center justify-center overflow-hidden cursor-pointer outline-none">
+        <span id="profile-avatar-emoji" class="text-lg" aria-hidden="true">🧑‍💼</span>
+      </button>
+      
+      <!-- Profile Dropdown (hidden by default) -->
+      <div id="profile-dropdown" class="hidden absolute right-0 mt-3 w-64 glass-panel p-5 bg-[#1a1a1a]/95 border border-[var(--surface-border)] rounded-xl shadow-2xl z-50 animate-fade-in flex flex-col gap-4">
+        <div class="flex items-center gap-3 pb-3 border-b border-white/10">
+          <div class="w-10 h-10 rounded-full bg-[var(--primary)]/15 border border-[var(--primary)] flex items-center justify-center text-lg">
+            👑
+          </div>
+          <div>
+            <h4 id="user-display-name" class="m-0 text-white font-semibold text-sm">Julian Al-Fayed</h4>
+            <p id="user-display-role" class="m-0 text-[10px] text-white/50 tracking-[1px]">VIP GUEST</p>
+          </div>
+        </div>
+        
+        <div class="flex flex-col gap-2 text-xs">
+          <div class="flex justify-between">
+            <span class="text-white/50">Clearance:</span>
+            <span id="user-display-clearance" class="text-[var(--primary)] font-semibold">Executive Gold</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-white/50">Suite:</span>
+            <span id="user-display-suite" class="text-white">Elite Box 402</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-white/50">Verification:</span>
+            <span id="user-display-status" class="text-[var(--success)] font-semibold">Verified</span>
+          </div>
+        </div>
+
+        <button id="profile-action-btn" onclick="triggerProfileAuthAction()" class="btn-primary w-full py-2 rounded-lg text-xs font-semibold">
+          Logout
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
