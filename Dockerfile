@@ -21,8 +21,8 @@ COPY --chown=user . $HOME/app
 RUN python manage.py collectstatic --no-input
 RUN python manage.py migrate
 
-# Expose the default Hugging Face Spaces port
-EXPOSE 7860
+# Expose port dynamically (Render uses 10000, Hugging Face uses 7860)
+EXPOSE 7860 10000
 
-# Run gunicorn on port 7860
-CMD ["gunicorn", "stadium_ops.wsgi:application", "--bind", "0.0.0.0:7860"]
+# Run gunicorn binding to the $PORT env var (defaults to 7860 for Hugging Face)
+CMD gunicorn stadium_ops.wsgi:application --bind 0.0.0.0:${PORT:-7860}
