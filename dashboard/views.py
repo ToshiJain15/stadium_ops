@@ -7,6 +7,11 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
+from django.core.cache import cache  # Fix 5: analytics caching
+
+# Constants — no magic numbers in logic
+MAX_CROWD = 88966
+MAX_PROMPT_LEN = 1000  # Fix 4: input length guard
 
 # Track startup time for health endpoint
 START_TIME = time.time()
@@ -345,8 +350,9 @@ def chat_api(request):
     """Generative AI Copilot chat view endpoint."""
     try:
         data = json.loads(request.body)
-        prompt = data.get('prompt', '')
-        context = data.get('context', '')
+        # Fix 4: Clamp prompt length to prevent oversized payload attacks
+        prompt = data.get('prompt', '')[:MAX_PROMPT_LEN]
+        context = data.get('context', '')[:500]
 
         # Failback to mock if API key is not configured
         if not API_KEY or API_KEY == 'your_gemini_api_key_here':
@@ -386,8 +392,10 @@ def concierge_api(request):
     """VIP Royal Concierge chat view endpoint."""
     try:
         data = json.loads(request.body)
-        prompt = data.get('prompt', '')
-        language = data.get('language', 'EN')
+        # Fix 4: Clamp prompt and validate language code
+        prompt = data.get('prompt', '')[:MAX_PROMPT_LEN]
+        raw_lang = data.get('language', 'EN')
+        language = raw_lang if raw_lang in ['EN', 'AR', 'FR', 'ES', 'PT', 'ZH'] else 'EN'
 
         # Fallback to mock if API key is not configured
         if not API_KEY or API_KEY == 'your_gemini_api_key_here':
@@ -496,6 +504,11 @@ def intelligence_api(request):
 @require_http_methods(["GET"])
 def analytics_api(request):
     """Returns historical trend data for Chart.js live graphs and a predictive AI summary."""
+    # Fix 5: Return cached response if available (30-second TTL)
+    cached = cache.get('analytics_payload')
+    if cached:
+        return JsonResponse(cached)
+
     r = random.Random(int(time.time() / 10))  # Changes every 10 seconds for variety
 
     # Generate 12 historical data points (last 60 minutes, every 5 mins)
@@ -557,7 +570,7 @@ Focus on trend forecasting and one recommended action. Be operational and precis
     else:
         ai_summary = f"Crowd trajectory is {trend_label.lower()} at {current_crowd:,} attendees. Fan sentiment at {sentiment_history[-1]}% is above benchmark — AI forecasts peak ingress in the next 15 minutes; recommend pre-positioning Gate 5 overflow marshals now."
 
-    return JsonResponse({
+    payload = {
         "labels": labels,
         "datasets": {
             "crowd": crowd_history,
@@ -568,7 +581,10 @@ Focus on trend forecasting and one recommended action. Be operational and precis
         "aiSummary": ai_summary,
         "trend": trend_label,
         "currentCrowd": current_crowd
-    })
+    }
+    # Fix 5: Cache the result for 30 seconds to reduce recomputation
+    cache.set('analytics_payload', payload, timeout=30)
+    return JsonResponse(payload)
 
 
 @require_http_methods(["GET"])
@@ -594,4 +610,83 @@ def health_api(request):
             "database": "not_applicable"
         },
         "version": "1.1.0"
+    })
+
+
+@require_http_methods(["GET"])
+def staff_api(request):
+    """Fix 3: Staff and Volunteer Hub API endpoint.
+    Returns zone assignments, shift schedule, AI task board, and a Gemini-powered briefing."""
+    r = random.Random(int(time.time() / 30))
+
+    zones = [
+        {"id": "z1", "name": "Gate 1 - North Entry", "type": "Entry/Egress", "volunteers": 12, "lead": "Ahmed K.", "status": "ACTIVE", "crowdLoad": round(r.uniform(72, 91), 1)},
+        {"id": "z2", "name": "Gate 4 - West VIP", "type": "VIP Entry", "volunteers": 6, "lead": "Sara M.", "status": "ACTIVE", "crowdLoad": round(r.uniform(60, 80), 1)},
+        {"id": "z3", "name": "Lower Bowl Sectors 101-104", "type": "Fan Management", "volunteers": 18, "lead": "James R.", "status": "ACTIVE", "crowdLoad": round(r.uniform(85, 97), 1)},
+        {"id": "z4", "name": "Medical Bay - South", "type": "Medical", "volunteers": 8, "lead": "Dr. Priya S.", "status": "ON_CALL", "crowdLoad": 0},
+        {"id": "z5", "name": "Info Kiosk - Main Concourse", "type": "Guest Services", "volunteers": 10, "lead": "Liu W.", "status": "ACTIVE", "crowdLoad": round(r.uniform(55, 75), 1)},
+        {"id": "z6", "name": "Eco Station - Plaza A", "type": "Sustainability", "volunteers": 5, "lead": "Fatima A.", "status": "ACTIVE", "crowdLoad": round(r.uniform(30, 55), 1)},
+    ]
+
+    shifts = [
+        {"id": "s1", "shift": "Morning Setup", "time": "10:00 - 14:00", "staff": 45, "role": "Setup and Logistics", "status": "COMPLETED"},
+        {"id": "s2", "shift": "Pre-Match", "time": "14:00 - 18:00", "staff": 120, "role": "Gate Operations and Fan Guidance", "status": "ACTIVE"},
+        {"id": "s3", "shift": "Match Operations", "time": "18:00 - 22:00", "staff": 85, "role": "In-Bowl Support", "status": "UPCOMING"},
+        {"id": "s4", "shift": "Post-Match Egress", "time": "22:00 - 01:00", "staff": 60, "role": "Egress Crowd Management", "status": "UPCOMING"},
+    ]
+
+    tasks = [
+        {"id": "t1", "priority": "HIGH", "zone": "Gate 4", "task": "Redirect VIP overflow to West Gate secondary lane. ETA: 5 mins.", "assignee": "Sara M.", "color": "#FF5252"},
+        {"id": "t2", "priority": "MEDIUM", "zone": "Sectors 101-104", "task": "Deploy 3 additional marshals to Row F stairwell - crowd density elevated.", "assignee": "James R.", "color": "#D4FF00"},
+        {"id": "t3", "priority": "LOW", "zone": "Info Kiosk", "task": "Restock multilingual wayfinding maps (Arabic + French editions).", "assignee": "Liu W.", "color": "#00E676"},
+        {"id": "t4", "priority": "MEDIUM", "zone": "Eco Station", "task": "Log 42 recyclable items collected. Update sustainability tracker.", "assignee": "Fatima A.", "color": "#D4FF00"},
+        {"id": "t5", "priority": "HIGH", "zone": "Medical Bay", "task": "Heat advisory: increase hydration patrol frequency to every 15 mins.", "assignee": "Dr. Priya S.", "color": "#FF5252"},
+    ]
+
+    total_volunteers = sum(z["volunteers"] for z in zones)
+    active_zones = sum(1 for z in zones if z["status"] == "ACTIVE")
+    lower_bowl_load = zones[2]["crowdLoad"]
+
+    if API_KEY and API_KEY != 'your_gemini_api_key_here':
+        try:
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={API_KEY}"
+            headers = {"Content-Type": "application/json"}
+            gemini_prompt = (
+                f"You are the AI Operations Director for FIFA 2026 Lusail Stadium. "
+                f"Write a 3-sentence pre-match briefing for volunteer staff. "
+                f"Status: {total_volunteers} volunteers across {active_zones} zones. "
+                f"Lower bowl at {lower_bowl_load}%. Be direct and motivational."
+            )
+            payload = {"contents": [{"parts": [{"text": gemini_prompt}]}]}
+            resp = requests.post(url, headers=headers, json=payload, timeout=8)
+            if resp.status_code == 200:
+                briefing = resp.json()["candidates"][0]["content"]["parts"][0]["text"].strip()
+            else:
+                raise Exception("API error")
+        except Exception:
+            briefing = (
+                f"Attention all {total_volunteers} volunteers: Pre-match ops LIVE across {active_zones} zones. "
+                f"Lower bowl at {lower_bowl_load}% - maintain all marshal positions. "
+                f"Your dedication represents FIFA 2026 values - make every fan interaction count."
+            )
+    else:
+        briefing = (
+            f"Attention all {total_volunteers} volunteers: Pre-match ops LIVE across {active_zones} zones. "
+            f"Lower bowl at {lower_bowl_load}% - maintain all marshal positions. "
+            f"Your dedication represents FIFA 2026 values - make every fan interaction count."
+        )
+
+    return JsonResponse({
+        "zones": zones,
+        "shifts": shifts,
+        "tasks": tasks,
+        "metrics": {
+            "totalVolunteers": total_volunteers,
+            "activeZones": active_zones,
+            "totalZones": len(zones),
+            "tasksHigh": sum(1 for t in tasks if t["priority"] == "HIGH"),
+            "tasksMedium": sum(1 for t in tasks if t["priority"] == "MEDIUM"),
+        },
+        "aiBriefing": briefing,
+        "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     })

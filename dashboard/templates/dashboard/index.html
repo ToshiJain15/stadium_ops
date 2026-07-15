@@ -2,6 +2,9 @@
 {% load static %}
 
 {% block content %}
+<!-- Fix 11: Skip to main content link for keyboard users -->
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
 <div id="main-wrapper" class="animate-fade-in flex flex-col h-screen w-screen overflow-hidden relative">
 
   <!-- Global Toast Alert Container -->
@@ -23,12 +26,11 @@
     <!-- Right side dynamic sub-nav -->
     <div class="flex items-center gap-[30px]">
       <!-- Concierge Sub-Nav (only shown when Concierge Tab is active) -->
-      <div id="subnav-concierge" class="hidden flex gap-5 text-xs tracking-[1px]">
-        <span class="subnav-link text-white/50" onclick="switchConciergeSubTab(this, 'Stadium Guide view')">STADIUM
-          GUIDE</span>
-        <span class="subnav-link active" onclick="switchConciergeSubTab(this, 'Royal Concierge view')">ROYAL
-          CONCIERGE</span>
-        <span class="subnav-link text-white/50" onclick="switchConciergeSubTab(this, 'Protocol view')">PROTOCOL</span>
+      <!-- Fix 12: Replaced <span onclick> with semantic <button role="tab"> for keyboard accessibility -->
+      <div id="subnav-concierge" class="hidden flex gap-5 text-xs tracking-[1px]" role="tablist" aria-label="Concierge sections">
+        <button class="subnav-link text-white/50 bg-transparent border-none cursor-pointer" role="tab" aria-selected="false" onclick="switchConciergeSubTab(this, 'Stadium Guide view')">STADIUM GUIDE</button>
+        <button class="subnav-link active bg-transparent border-none cursor-pointer" role="tab" aria-selected="true" onclick="switchConciergeSubTab(this, 'Royal Concierge view')">ROYAL CONCIERGE</button>
+        <button class="subnav-link text-white/50 bg-transparent border-none cursor-pointer" role="tab" aria-selected="false" onclick="switchConciergeSubTab(this, 'Protocol view')">PROTOCOL</button>
       </div>
 
       <!-- Intelligence Sub-Nav (only shown when Intelligence Tab is active) -->
@@ -123,18 +125,25 @@
           <span>🍃</span>
           <span>Eco-Dashboard</span>
         </div>
-        <div class="sidebar-item" onclick="dispatchInfoAlert('Health check: All systems nominal. v1.1.0')" data-tab="Settings" role="tab" aria-selected="false" tabindex="-1">
-          <span>⚙️</span>
+        <!-- Fix 3: Staff Hub navigation item -->
+        <div class="sidebar-item" onclick="switchActiveTab('Staff')" data-tab="Staff" role="tab" aria-selected="false" tabindex="-1">
+          <span aria-hidden="true">🤝</span>
+          <span>Staff & Volunteers</span>
+        </div>
+        <div class="sidebar-item" onclick="dispatchInfoAlert('Health check: All systems nominal. v1.2.0')" data-tab="Settings" role="tab" aria-selected="false" tabindex="-1">
+          <span aria-hidden="true">⚙️</span>
           <span>System Settings</span>
         </div>
       </nav>
     </aside>
 
     <!-- MAIN APP CONTENT AREA -->
-    <main class="flex-1 overflow-y-auto px-10 py-[30px] pb-[100px]">
+    <main id="main-content" class="flex-1 overflow-y-auto px-10 py-[30px] pb-[100px]" aria-label="Main dashboard content">
 
       <!-- ================= INTELLIGENCE TAB ================= -->
-      <section id="tab-Intelligence" class="tab-section flex flex-col gap-5">
+      <!-- Fix 9: Each section has exactly one <h1> (screen-reader visible only) -->
+      <section id="tab-Intelligence" class="tab-section flex flex-col gap-5" aria-labelledby="tab-intelligence-h1">
+        <h1 id="tab-intelligence-h1" class="sr-only">Tournament Overview &amp; Operations Command</h1>
         <!-- Top Row -->
         <div class="flex flex-wrap gap-5 min-h-[250px]">
           <!-- GenAI Live Intelligence -->
@@ -232,7 +241,8 @@
               <span>🤖</span> INTELLIGENCE FEED
             </h3>
             <div id="intelligence-feed-container"
-              class="flex flex-col gap-2.5 overflow-y-auto pr-2.5 flex-1 max-h-[430px]">
+              class="flex flex-col gap-2.5 overflow-y-auto pr-2.5 flex-1 max-h-[430px]"
+              aria-live="polite" aria-label="Live Operations Intelligence Feed">
               <!-- Dynamic alert elements will be appended here -->
             </div>
           </div>
@@ -1058,6 +1068,56 @@
                 </p>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ================= STAFF & VOLUNTEERS TAB ================= -->
+      <section id="tab-Staff" class="tab-section hidden flex-col gap-5" aria-labelledby="tab-staff-h1">
+        <h1 id="tab-staff-h1" class="sr-only">Staff &amp; Volunteer Management</h1>
+        
+        <!-- AI Briefing -->
+        <div class="glass-panel p-6 border border-[var(--primary)] rounded-xl flex items-start gap-4 bg-[var(--primary)]/10">
+          <span class="text-3xl">🤖</span>
+          <div>
+            <h3 class="text-[10px] text-[var(--primary)] tracking-[1px] font-bold mb-2">AI PRE-MATCH BRIEFING</h3>
+            <p id="staff-ai-briefing" class="text-sm text-white/90 leading-relaxed m-0">Loading AI analysis...</p>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap gap-5">
+          <!-- Shifts -->
+          <div class="flex-1 min-w-[300px] glass-panel p-[30px] rounded-xl border border-[var(--surface-border)]">
+            <div class="flex justify-between items-center mb-5">
+              <h3 class="m-0 text-base text-[var(--primary)] font-semibold">Shift Schedule</h3>
+              <span class="text-xs text-white/50" id="staff-total-count">0 Staff</span>
+            </div>
+            <div id="staff-shifts-container" class="flex flex-col gap-3">
+              <!-- Shift cards injected here -->
+            </div>
+          </div>
+
+          <!-- Zones -->
+          <div class="flex-1 min-w-[300px] glass-panel p-[30px] rounded-xl border border-[var(--surface-border)]">
+            <div class="flex justify-between items-center mb-5">
+              <h3 class="m-0 text-base text-[var(--primary)] font-semibold">Zone Deployment</h3>
+              <span class="text-xs text-white/50" id="staff-active-zones">0 Zones</span>
+            </div>
+            <div id="staff-zones-container" class="flex flex-col gap-3">
+              <!-- Zone cards injected here -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Task Board -->
+        <div class="glass-panel p-[30px] rounded-xl border border-[var(--surface-border)]">
+          <div class="flex justify-between items-center mb-5">
+            <h3 class="m-0 text-base text-[var(--primary)] font-semibold">Active Priority Tasks</h3>
+            <button class="btn-outline" onclick="pollStaffAPI()">Refresh AI Board</button>
+          </div>
+          <div id="staff-tasks-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Tasks injected here -->
           </div>
         </div>
       </section>

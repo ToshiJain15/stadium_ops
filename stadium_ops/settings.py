@@ -48,6 +48,8 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # Fix 2: Custom CSP + Security response headers middleware
+    'stadium_ops.middleware.SecurityHeadersMiddleware',
 ]
 
 ROOT_URLCONF = 'stadium_ops.urls'
@@ -77,6 +79,14 @@ DATABASES = {
     }
 }
 
+# Fix 5: Django in-memory cache for /api/analytics (30-second TTL)
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'stadium-ops-cache',
+    }
+}
+
 # Internationalization
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
@@ -90,3 +100,7 @@ STATICFILES_DIRS = [
 ]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Fix 2: Security headers (defence-in-depth)
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'

@@ -180,6 +180,12 @@ if (chatSubmitBtn && chatInput) {
   });
 }
 
+/**
+ * Submits a telemetry-enriched query to the GenAI chat endpoint.
+ * Falls back to local mock engine on network/API failure.
+ * @async
+ * @returns {Promise<void>}
+ */
 async function submitChatQuery() {
   const queryText = chatInput.value.trim();
   if (!queryText) return;
@@ -736,15 +742,36 @@ function populateSecurityLogs() {
     { time: `${currentHour}:${String(Math.max(0, currentMinute - 25)).padStart(2,'0')}:41`, level: 'INFO', event: 'Security handoff completed: Day shift → Evening shift. 32 units deployed.' }
   ];
 
-  logsList.innerHTML = logs.map(log => `
-    <div style="padding: 12px 15px; background: rgba(255,255,255,0.03); border-left: 3px solid ${log.level === 'WARN' ? 'var(--primary)' : 'var(--success)'}; border-radius: 6px; font-size: 0.85rem">
-      <div style="display: flex; justify-content: space-between; margin-bottom: 5px; color: rgba(255,255,255,0.4); font-size: 0.75rem">
-        <span>${log.time}</span>
-        <span style="color: ${log.level === 'WARN' ? 'var(--primary)' : 'var(--success)'}; font-weight: 600">${log.level}</span>
-      </div>
-      <p style="margin: 0; color: #eee; line-height: 1.4">${log.event}</p>
-    </div>
-  `).join('');
+  
+  // Fix 1: Safe DOM manipulation instead of innerHTML
+  logsList.innerHTML = '';
+  logs.forEach(log => {
+    const div = document.createElement('div');
+    const borderColor = log.level === 'WARN' ? 'var(--primary)' : 'var(--success)';
+    div.style.cssText = `padding: 12px 15px; background: rgba(255,255,255,0.03); border-left: 3px solid ${borderColor}; border-radius: 6px; font-size: 0.85rem`;
+    
+    const header = document.createElement('div');
+    header.style.cssText = 'display: flex; justify-content: space-between; margin-bottom: 5px; color: rgba(255,255,255,0.4); font-size: 0.75rem';
+    
+    const timeSpan = document.createElement('span');
+    timeSpan.textContent = log.time;
+    
+    const levelSpan = document.createElement('span');
+    levelSpan.textContent = log.level;
+    levelSpan.style.cssText = `color: ${borderColor}; font-weight: 600`;
+    
+    const p = document.createElement('p');
+    p.textContent = log.event;
+    p.style.cssText = 'margin: 0; color: #eee; line-height: 1.4';
+    
+    header.appendChild(timeSpan);
+    header.appendChild(levelSpan);
+    div.appendChild(header);
+    div.appendChild(p);
+    
+    logsList.appendChild(div);
+  });
+
 }
 
 // 2D SVG Blueprint layers toggles
@@ -895,6 +922,11 @@ function renderIntelligenceFeed() {
   `).join('');
 }
 
+/**
+ * Fetches background intelligence updates for the Operations Center.
+ * @async
+ * @returns {Promise<void>}
+ */
 async function fetchIntelligenceFeed() {
   try {
     const res = await fetch('/api/intelligence', {
@@ -1384,3 +1416,63 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   }, 1000);
 });
+
+
+// --- STAFF HUB CONTROLS ---
+async function pollStaffAPI() {
+  try {
+    const res = await fetch('/api/staff');
+    if (!res.ok) return;
+    const data = await res.json();
+    
+    document.getElementById('staff-total-count').textContent = `${data.metrics.totalVolunteers} Volunteers`;
+    document.getElementById('staff-active-zones').textContent = `${data.metrics.activeZones} Active Zones`;
+    
+    const briefingEl = document.getElementById('staff-ai-briefing');
+    if (briefingEl) briefingEl.textContent = data.aiBriefing;
+    
+    const shiftsCont = document.getElementById('staff-shifts-container');
+    if (shiftsCont) {
+      shiftsCont.innerHTML = data.shifts.map(s => `
+        <div style="padding: 10px; background: rgba(255,255,255,0.03); border-left: 2px solid ${s.status==='ACTIVE'?'var(--primary)':'#555'}; border-radius:6px;">
+          <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+            <span style="font-size:0.85rem; font-weight:600; color:#fff">${s.shift}</span>
+            <span style="font-size:0.7rem; color:${s.status==='ACTIVE'?'var(--primary)':'#aaa'}">${s.status}</span>
+          </div>
+          <div style="font-size:0.75rem; color:#aaa">${s.time} • ${s.staff} Staff • ${s.role}</div>
+        </div>
+      `).join('');
+    }
+    
+    const zonesCont = document.getElementById('staff-zones-container');
+    if (zonesCont) {
+      zonesCont.innerHTML = data.zones.map(z => `
+        <div style="padding: 10px; background: rgba(255,255,255,0.03); border-left: 2px solid ${z.status==='ACTIVE'?'var(--success)':'#555'}; border-radius:6px;">
+          <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+            <span style="font-size:0.85rem; font-weight:600; color:#fff">${z.name}</span>
+            <span style="font-size:0.7rem; color:#aaa">Load: ${z.crowdLoad}%</span>
+          </div>
+          <div style="font-size:0.75rem; color:#aaa">Lead: ${z.lead} • Staff: ${z.volunteers}</div>
+        </div>
+      `).join('');
+    }
+    
+    const tasksCont = document.getElementById('staff-tasks-container');
+    if (tasksCont) {
+      tasksCont.innerHTML = data.tasks.map(t => `
+        <div class="glass-panel" style="padding:15px; border-top: 2px solid ${t.color}">
+          <div style="display:flex; justify-content:space-between; margin-bottom:8px">
+            <span style="font-size:0.7rem; color:${t.color}; font-weight:700">${t.priority}</span>
+            <span style="font-size:0.7rem; color:#aaa">${t.zone}</span>
+          </div>
+          <p style="margin:0 0 10px 0; font-size:0.85rem; color:#eee">${t.task}</p>
+          <div style="font-size:0.7rem; color:#aaa">Assignee: <span style="color:#fff">${t.assignee}</span></div>
+        </div>
+      `).join('');
+    }
+  } catch(e) {
+    console.error("Staff API poll error", e);
+  }
+}
+setInterval(pollStaffAPI, 30000);
+pollStaffAPI();

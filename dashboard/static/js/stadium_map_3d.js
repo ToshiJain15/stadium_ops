@@ -467,6 +467,28 @@
     return (Date.now() - startTime) / 1000;
   }
 
+  // Fix 14: Proper disposal of Three.js objects to avoid memory leaks
+  window.disposeStadiumScene = function() {
+    if (!scene) return;
+    
+    // Dispose geometry and materials
+    sectorMeshes.forEach(mesh => {
+      if (mesh.geometry) mesh.geometry.dispose();
+      if (mesh.material) {
+        if (Array.isArray(mesh.material)) {
+          mesh.material.forEach(m => m.dispose());
+        } else {
+          mesh.material.dispose();
+        }
+      }
+      scene.remove(mesh);
+    });
+    
+    if (renderer) {
+      renderer.dispose();
+    }
+  };
+
   // Load initializer
   window.addEventListener('DOMContentLoaded', () => {
     // Small timeout to guarantee DOM metrics are styled
