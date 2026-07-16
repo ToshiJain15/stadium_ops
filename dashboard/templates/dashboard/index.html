@@ -39,7 +39,7 @@
 
   <!-- FLOATING BOTTOM NAVIGATION BAR -->
   <nav aria-label="Tab Navigation" role="tablist"
-    class="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-black/80 to-[#111]/90 border-t border-[var(--surface-border)] flex justify-center items-center gap-[100px] z-10 select-none">
+    class="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-black/80 to-[#111]/90 border-t border-[var(--surface-border)] flex justify-center items-center gap-[70px] z-10 select-none">
     <button onclick="switchActiveTab('Intelligence')" class="nav-tab-btn active" id="nav-btn-Intelligence" role="tab" aria-selected="true" aria-label="View Intelligence Overview Tab">
       <span class="text-2xl node-icon" aria-hidden="true">📊</span>
       <span class="text-[10px] font-semibold tracking-[0.5px]">Intelligence</span>
@@ -55,6 +55,10 @@
     <button onclick="switchActiveTab('Access')" class="nav-tab-btn" id="nav-btn-Access" role="tab" aria-selected="false" aria-label="View Secure Access Control Tab">
       <span class="text-2xl node-icon grayscale opacity-50" aria-hidden="true">🛡️</span>
       <span class="text-[10px] tracking-[0.5px]">Access</span>
+    </button>
+    <button onclick="switchActiveTab('Staff')" class="nav-tab-btn" id="nav-btn-Staff" role="tab" aria-selected="false" aria-label="View Staff and Volunteer Hub Tab">
+      <span class="text-2xl node-icon grayscale opacity-50" aria-hidden="true">🤝</span>
+      <span class="text-[10px] tracking-[0.5px]">Staff</span>
     </button>
   </nav>
 </div>

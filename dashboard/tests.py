@@ -250,3 +250,41 @@ class DashboardTests(SimpleTestCase):
         # Trend should be one of these three formats
         valid_trends = ['↑ Rising', '↓ Declining', '→ Stable']
         self.assertIn(data['trend'], valid_trends)
+
+    async def test_staff_api(self):
+        """Verify staff API returns active volunteer shifts, tasks, and metrics."""
+        url = reverse('staff_api')
+        response = await self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.content)
+
+        # Verify key parts of schema
+        self.assertIn('zones', data)
+        self.assertIn('shifts', data)
+        self.assertIn('tasks', data)
+        self.assertIn('metrics', data)
+        self.assertIn('aiBriefing', data)
+        self.assertIn('timestamp', data)
+
+        # Verify metrics
+        self.assertIn('totalVolunteers', data['metrics'])
+        self.assertGreater(data['metrics']['totalVolunteers'], 0)
+        self.assertEqual(len(data['zones']), data['metrics']['totalZones'])
+
+    @patch('dashboard.views.httpx.AsyncClient.post', new_callable=AsyncMock)
+    async def test_staff_api_with_gemini_mock(self, mock_post):
+        """Verify staff API calls Gemini when API_KEY is present."""
+        from unittest.mock import MagicMock
+        mock_post.return_value.status_code = 200
+        mock_post.return_value.json = MagicMock(return_value={
+            'candidates': [{'content': {'parts': [{'text': 'Gemini briefing response'}]}}]
+        })
+
+        with patch('dashboard.views.API_KEY', 'valid_test_key'):
+            url = reverse('staff_api')
+            response = await self.client.get(url)
+            self.assertEqual(response.status_code, 200)
+            data = json.loads(response.content)
+            self.assertEqual(data['aiBriefing'], 'Gemini briefing response')
+            mock_post.assert_called_once()
+

@@ -578,7 +578,7 @@ window.selectTransportRoute = function(routeId) {
     }
   });
 
-  let label = 'Gold Line Metro';
+  let label = 'Meadowlands Rail';
   if (routeId === 'metro') {
     state.ecoPoints += 150;
     state.ecoCO2 += 0.8;
@@ -917,7 +917,7 @@ let alertsFeed = [
   {
     id: '7',
     type: 'HIGH PRIORITY',
-    title: 'Gold Line Metro frequency increased.',
+    title: 'Meadowlands Rail frequency increased.',
     description: 'Platform density elevated. Trains dispatched every 3 minutes. The Green Mile recommended for fans within 500m.',
     timeLabel: 'T-10 MINS',
     color: '#D4FF00'
