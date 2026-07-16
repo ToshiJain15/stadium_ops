@@ -604,7 +604,7 @@ window.selectFacility = function(facility) {
 
   if (facility === 'lounge') {
     zone = 'sec_103';
-    desc = "Lusail Royal Lounge selected. Elevators are accessible via Corridor East Gate. Custom refreshments active.";
+    desc = "MetLife Royal Lounge selected. Elevators are accessible via Corridor East Gate. Custom refreshments active.";
     alertMsg = "🥂 Route to Royal Lounge active. Take East Elevators to Level 4.";
   } else if (facility === 'helipad') {
     zone = 'sec_204';
@@ -677,7 +677,7 @@ window.triggerWheelchairToggle = function() {
     if (label) label.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-var(--success) inline-block" style="background-color: var(--success)"></span> Active — Step-free routes enabled';
     if (label) label.style.color = 'var(--success)';
 
-    if (metroDesc) metroDesc.innerText = '♿ STEP-FREE ROUTE: Platform 4 elevator active. Low-floor boarding enabled. Direct boarding assistance available at Lusail Station.';
+    if (metroDesc) metroDesc.innerText = '♿ STEP-FREE ROUTE: Track 1 elevator active. Low-floor boarding enabled. Direct boarding assistance available at Meadowlands Station.';
     if (shuttleDesc) shuttleDesc.innerText = '♿ ACCESSIBLE SHUTTLE: Equipped with hydraulic wheelchair ramp and secure docking bays. Direct VIP curbside boarding at West Gate.';
     if (walkDesc) walkDesc.innerText = '♿ ELEVATED PATHWAY: 100% ramp-access walkway, zero stairs. Electric mobility carts available on demand at check-point Alpha.';
 
@@ -688,7 +688,7 @@ window.triggerWheelchairToggle = function() {
     if (label) label.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-white/40 inline-block"></span> Inactive';
     if (label) label.style.color = 'rgba(255,255,255,0.4)';
 
-    if (metroDesc) metroDesc.innerText = 'Direct route from Doha Port to Lusail Stadium. Accessible boarding at Platform 4.';
+    if (metroDesc) metroDesc.innerText = 'Direct route from Manhattan to MetLife Stadium. Accessible boarding at Track 1.';
     if (shuttleDesc) shuttleDesc.innerText = 'Hydrogen-powered private transit with in-seat entertainment and refreshments.';
     if (walkDesc) walkDesc.innerText = 'Climate-controlled scenic walkway with interactive World Cup history displays.';
 

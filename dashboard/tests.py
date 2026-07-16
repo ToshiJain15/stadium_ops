@@ -51,7 +51,7 @@ class DashboardTests(SimpleTestCase):
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.content)
         self.assertIn('response', data)
-        self.assertIn('Gate 5', data['response']) # verify flow logic answers correctly
+        self.assertIn('Gate C', data['response']) # verify flow logic answers correctly
 
     async def test_chat_api_empty_payload(self):
         """Verify chat endpoint handles empty prompt/payload gracefully without crashing."""
@@ -180,7 +180,7 @@ class DashboardTests(SimpleTestCase):
         self.assertIn('security', data)
         
         # Check specific values
-        self.assertEqual(data['stadium']['name'], 'Lusail Iconic Stadium')
+        self.assertEqual(data['stadium']['name'], 'MetLife Stadium')
         self.assertTrue(len(data['matches']) >= 4)
         self.assertTrue(len(data['gates']) >= 5)
 

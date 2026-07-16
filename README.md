@@ -1,6 +1,6 @@
 # FIFA 2026 Stadium Operations Assistant & AI Copilot
 
-An AI-enhanced stadium operations hub and VIP concierge experience platform for the FIFA World Cup 2026 at Lusail Stadium. This project is built specifically for **Virtual: PromptWars**.
+An AI-enhanced stadium operations hub and VIP concierge experience platform for the FIFA World Cup 2026 at MetLife Stadium (NY/NJ Host City). This project is built specifically for **Virtual: PromptWars**.
 
 ---
 
@@ -90,7 +90,7 @@ python manage.py test dashboard
 ## ✨ Features & Engineering Enhancements
 
 ### 1. Front-end Component Modularization
-- Replaced the monolithic index structure with self-contained, clean Django sub-templates under `dashboard/templates/dashboard/components/` (including `header.html`, `sidebar.html`, tab contents, and `modals.html`).
+- Replaced the monolithic index structure with self-contained, clean Django sub-templates under `dashboard/templates/dashboard/includes/` (including `header.html`, `sidebar.html`, tab contents, and `modals.html`).
 - Decoupled Three.js visualization engine (`stadium_map_3d.js`) and UI controller script (`dashboard.js`) for modular maintenance.
 
 ### 2. High-Grade Security & AI Defense
@@ -117,3 +117,7 @@ python manage.py test dashboard
 - **Reverse Proxy Support**: Engineered with `SECURE_PROXY_SSL_HEADER` and `CSRF_TRUSTED_ORIGINS` to securely bridge HTTPS load balancers without breaking forms or CSRF checks.
 - **Hugging Face Spaces**: Pre-packaged with a custom `Dockerfile` enforcing user ID `1000`, port `7860`, and `gunicorn` binding specifically tailored for seamless HF deployment.
 - **Render.com Ready**: Ships with a ready-to-run `build.sh` script to automate dependency installs, static file collection (`whitenoise`), and database migrations on modern PaaS providers.
+
+### 7. Problem Statement Alignment & Code Quality Refactoring
+- **Separation of Concerns**: Extracted all mock responders, telemetry generation, and localization dictionary structures from `views.py` into a modular utility file `utils.py`.
+- **FIFA 2026 Context Compliance**: Completely updated all simulated matches, stadium venues, transit modes, and city configurations to reflect **MetLife Stadium (East Rutherford, NJ - NY/NJ Host City)** and **Meadowlands Rail Line (NJ Transit)** for 2026, removing outdated Qatari references.
