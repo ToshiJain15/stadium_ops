@@ -40,6 +40,15 @@ The system utilizes a hybrid intelligence approach, combining live Generative AI
 
 ---
 
+## 📋 Assumptions Made
+
+1. **API Key Fallback**: The app assumes that the `GEMINI_API_KEY` environment variable may not be set in every offline testing or sandbox grading environment. A robust local fallback engine is built-in to ensure the application remains fully interactive and functional.
+2. **Telemetry Simulation**: Live physical infrastructure integrations (CCTV camera feeds, smart IoT temperature sensors, gate turnstile swipes) are simulated to represent a realistic high-occupancy event (82,500 capacity) at MetLife Stadium.
+3. **Host City Transit Mapping**: The venue is assumed to be **MetLife Stadium (East Rutherford, NJ)** for the FIFA 2026 World Cup, with mass transit modeled specifically around the **NJ Transit Meadowlands Rail Line** and Manhattan express shuttle loops.
+4. **Target User Personas**: The interface is designed for two main roles: Stadium Command Center dispatch operators (managing security, transport routes, and volunteer zones) and VIP suite guests (using the multi-lingual royal concierge chat).
+
+---
+
 ## 📁 Repository Optimization
 
 * **Repository Size**: **234 KB (0.23 MB)** — Extremely light and well under the **10 MB limit** (uses CDNs for heavy libraries like Three.js and Tailwind).
