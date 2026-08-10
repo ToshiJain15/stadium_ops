@@ -20,8 +20,10 @@ from .utils import (
 # Track startup time for health endpoint
 START_TIME = time.time()
 
+API_KEY = os.getenv('GEMINI_API_KEY', '').strip()
+
 def get_api_key():
-    return os.getenv('GEMINI_API_KEY', '').strip()
+    return os.getenv('GEMINI_API_KEY', API_KEY).strip()
 
 # --- VIEWS ---
 
