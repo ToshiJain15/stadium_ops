@@ -77,7 +77,7 @@ async def chat_api(request):
             data = json.loads(request.body)
             prompt = data.get('prompt', '')
             context = data.get('context', '')
-            return JsonResponse({"response": get_mock_chat_response(prompt, context), "error_debug": str(e)})
+            return JsonResponse({"response": get_mock_chat_response(prompt, context)})
         except Exception:
             return JsonResponse({"response": "AI Core load balancing active. Telemetry nominal.", "mock_mode": True})
 
