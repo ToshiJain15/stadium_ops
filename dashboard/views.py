@@ -21,7 +21,7 @@ from .utils import (
 START_TIME = time.time()
 
 # Get Gemini API key
-API_KEY = os.getenv('GEMINI_API_KEY', '')
+API_KEY = os.getenv('GEMINI_API_KEY', '').strip()
 
 # --- VIEWS ---
 
@@ -77,7 +77,7 @@ async def chat_api(request):
             data = json.loads(request.body)
             prompt = data.get('prompt', '')
             context = data.get('context', '')
-            return JsonResponse({"response": get_mock_chat_response(prompt, context)})
+            return JsonResponse({"response": get_mock_chat_response(prompt, context), "error_debug": str(e)})
         except Exception:
             return JsonResponse({"response": "AI Core load balancing active. Telemetry nominal.", "mock_mode": True})
 
